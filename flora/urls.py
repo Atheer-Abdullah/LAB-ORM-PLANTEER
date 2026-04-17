@@ -3,4 +3,7 @@ from . import views
 
 app_name = "flora"
 
-urlpatterns = []
+urlpatterns = [
+    path("new/", views.add_plant_view, name="add_plant_view"),
+    path("all/", views.all_plants_view, name="all_plants_view"),
+]

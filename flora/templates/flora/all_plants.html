@@ -1,0 +1,60 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %} All Plants - Planteer {% endblock %}
+
+{% block content %}
+<div class="container mt-5"> 
+    <div class="row mb-5">
+        <div class="col-12">
+            <h1 class="fw-bold display-5">All Plants</h1>
+        </div>
+    </div>
+
+    <div class="row g-5"> 
+        {% for plant in plants %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 border-0 bg-transparent">
+                <div class="position-relative mb-3" style="height: 220px; overflow: hidden; border-radius: 12px;">
+                    {% if plant.image %}
+    <img src="{{ plant.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ plant.name }}">
+{% else %}
+    <img src="/media/images/plant_default.jpg" class="w-100 h-100 object-fit-cover" alt="Default Image">
+{% endif %}
+                </div>
+
+                <div class="card-body p-0">
+                    <h5 class="fw-bold mb-1" style="font-size: 1.25rem;">{{ plant.name }}</h5>
+                    
+                    <p class="text-muted small mb-2" style="line-height: 1.4;">
+                        {{ plant.about|truncatechars:80 }}
+                    </p>
+                    
+                    <p class="fw-bold small mb-0">{{ plant.category }}</p>
+
+                    <div class="mt-2 text-muted small">
+                        {% if plant.is_edible %}<i class="fas fa-utensils me-2" title="Edible"></i>{% endif %}
+                        {% if plant.is_helpful %}<i class="fas fa-medkit" title="Medicinal"></i>{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted fs-5">No plants documented yet.</p>
+            <a href="{% url 'flora:add_plant_view' %}" class="btn btn-dark rounded-pill px-4">Add Plant</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .card:hover {
+        transform: translateY(-5px);
+        transition: transform 0.3s ease;
+    }
+    h1 {
+        letter-spacing: -1px;
+    }
+</style>
+{% endblock %}

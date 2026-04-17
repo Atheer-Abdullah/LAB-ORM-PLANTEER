@@ -1,0 +1,85 @@
+{% extends 'main/base.html' %}
+
+{% block title %} New Plant Entry - Planteer {% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="editor-container shadow-sm p-5 bg-white rounded border">
+            <div class="editor-header mb-5 text-center">
+                <h1 class="display-5 fw-bold">New <span style="color: #198754;">Plant.</span></h1>
+                <p class="text-muted">Document a new species and its characteristics in our botanical database.</p>
+            </div>
+            
+            <form action="{% url 'flora:add_plant_view' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-group-premium mb-4">
+                    <input type="text" name="name" class="title-input w-100" placeholder="Scientific or Common Name..." required 
+                           style="border: none; border-bottom: 2px solid #eee; font-size: 2rem; outline: none; padding-bottom: 10px;">
+                </div>
+
+                <div class="form-group-premium mb-4">
+                    <textarea name="about" class="content-input w-100" placeholder="Tell us about this plant's history and nature..." required 
+                              style="border: none; min-height: 150px; font-size: 1.1rem; outline: none; resize: none;"></textarea>
+                </div>
+
+                <div class="botanical-settings row g-3 p-4 mb-4" style="background: #f8f9fa; border-radius: 15px;">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-uppercase text-muted">Category</label>
+                        <select name="category" class="form-select border-0 shadow-sm">
+                            {% for value, label in categories %}
+                                <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-uppercase text-muted">Usage</label>
+                        <input type="text" name="used_for" class="form-control border-0 shadow-sm" placeholder="Medicinal, Decor, etc." required>
+                    </div>
+
+                    <div class="col-md-6 d-flex align-items-center mt-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="is_edible" id="edible">
+                            <label class="form-check-label fw-bold text-muted small text-uppercase ms-2" for="edible">Edible Species</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center mt-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="is_helpful" id="helpful">
+                            <label class="form-check-label fw-bold text-muted small text-uppercase ms-2" for="helpful">Helpful/Medicinal</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-footer d-flex justify-content-between align-items-center flex-wrap gap-3 mt-4">
+                    <div class="d-flex gap-2">
+                        <label for="id_image" class="btn-action shadow-sm" style="cursor: pointer; padding: 10px 20px; border-radius: 30px; border: 1px solid #ddd; background: white;">
+                            <i class="fas fa-image me-1 text-success"></i> Plant Photo
+                        </label>
+                        <input type="file" name="image" id="id_image" accept="image/*" style="display: none;">
+                    </div>
+
+                    <button type="submit" class="btn-action shadow-lg" style="background: #198754; color: #fff; padding: 10px 40px; border-radius: 30px; border: none; font-weight: bold; transition: all 0.3s ease;">
+                        <i class="fas fa-leaf me-2"></i>Publish Plant
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('id_image').addEventListener('change', function() {
+        if (this.files && this.files.length > 0) {
+            const label = document.querySelector(`label[for="${this.id}"]`);
+            const fileName = this.files[0].name;
+            label.style.background = "#198754"; 
+            label.style.color = "white";
+            label.style.borderColor = "#198754";
+            label.innerHTML = `<i class="fas fa-check-circle"></i> ${fileName.substring(0, 10)}...`;
+        }
+    });
+</script>
+{% endblock %}

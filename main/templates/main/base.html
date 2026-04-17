@@ -12,78 +12,86 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-4">
-        <div class="container d-flex justify-content-between align-items-center">
-            
-            <a class="navbar-brand fw-bold fs-4" href="{% url 'main:home_view' %}">Planteer</a>
-            
-            <div class="d-flex align-items-center gap-4">
-                <ul class="navbar-nav flex-row gap-4 mb-0">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark fw-medium p-0" href="#">All Plants</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark fw-medium p-0" href="{% url 'main:contact_us_view' %}">Contact Us</a>
-                    </li>
-                </ul>
-                
-                <a href="#" class="btn btn-dark px-4 py-2 rounded-1 fw-bold">Add Plant</a>
-            </div>
-
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-4">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a class="navbar-brand fw-bold fs-4" href="{% url 'main:home_view' %}">Planteer</a>
+        
+        <div class="d-flex align-items-center gap-4">
+            <ul class="navbar-nav flex-row gap-3 gap-md-4 mb-0">
+                <li class="nav-item">
+                    <a class="nav-link text-dark fw-medium p-0" href="{% url 'main:home_view' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark fw-medium p-0" href="{% url 'flora:all_plants_view' %}">All Plants</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark fw-medium p-0" href="{% url 'main:contact_us_view' %}">Contact Us</a>
+                </li>
+            </ul>
+            <a href="{% url 'flora:add_plant_view' %}" class="btn btn-dark px-3 px-md-4 py-2 rounded-1 fw-bold small">Add Plant</a>
         </div>
-    </nav>
+    </div>
+</nav>
     <main class="py-5">
         {% block content %}{% endblock %}
     </main>
 
-<footer class="bg-white border-top py-5 mt-5">
-    <div class="container">
-        <div class="row"> 
-            
-            <div class="col-md-6">
-                <h5 class="fw-bold mb-3">Planteer</h5>
-                <p class="text-muted small mb-4" style="max-width: 300px;">
-                    Brief about the platform and its mission for plant lovers.
-                </p>
-                <div class="d-flex gap-3 fs-5">
-                    <a href="#" class="text-dark"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="text-dark"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="text-dark"><i class="fab fa-youtube"></i></a>
-                    <a href="#" class="text-dark"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-
-            <div class="col-md-6 d-flex justify-content-end gap-5 text-end"> 
+    <footer class="bg-white border-top py-5 mt-5">
+        <div class="container">
+            <div class="row gy-5 align-items-baseline"> 
                 
-                <div style="min-width: 100px;">
-                    <h6 class="fw-bold mb-3 small text-uppercase">Categories</h6>
-                    <ul class="list-unstyled text-muted small">
-                        <li class="mb-2">Trees</li>
-                        <li class="mb-2">Fruits</li>
-                        <li class="mb-2">Vegetables</li>
-                    </ul>
-                </div>
-                
-                <div style="min-width: 100px;">
-                    <h6 class="fw-bold mb-3 small text-uppercase">About</h6>
-                    <ul class="list-unstyled text-muted small">
-                        <li class="mb-2">Our Story</li>
-                        <li class="mb-2">Team</li>
-                    </ul>
+                <div class="col-lg-5 col-md-12 text-center text-lg-start">
+                    <h5 class="fw-bold m-0 fs-3">Planteer</h5>
+                    <p class="text-muted small mt-3 mb-4 mx-auto mx-lg-0" style="max-width: 300px;">
+                        Brief about the platform and its mission for plant lovers.
+                    </p>
+                    <div class="d-flex justify-content-center justify-content-lg-start gap-4 fs-4">
+                        <a href="#" class="text-dark"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-dark"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-dark"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-dark"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
 
-                <div style="min-width: 100px;">
-                    <h6 class="fw-bold mb-3 small text-uppercase">Help</h6>
-                    <ul class="list-unstyled text-muted small">
-                        <li class="mb-2">Support</li>
-                        <li class="mb-2">Privacy</li>
-                    </ul>
+                <div class="col-lg-7 col-md-12">
+                    <div class="d-lg-flex justify-content-lg-end pe-lg-0">
+                        <div class="row row-cols-1 row-cols-sm-3 text-center text-sm-start g-4 m-0" style="min-width: 400px;">
+                            
+                            <div class="col">
+                                <h6 class="fw-bold m-0 small text-uppercase">Categories</h6>
+                                <ul class="list-unstyled text-muted small mt-3">
+                                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Trees</a></li>
+                                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Fruits</a></li>
+                                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Vegetables</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="col">
+                                <h6 class="fw-bold m-0 small text-uppercase">About</h6>
+                                <ul class="list-unstyled text-muted small mt-3">
+                                    <li class="mb-2">Our Story</li>
+                                    <li class="mb-2">Team</li>
+                                    <li class="mb-2">
+                                        <a href="{% url 'main:contact_messages_view' %}" class="text-decoration-none text-muted">Messages</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col">
+                                <h6 class="fw-bold m-0 small text-uppercase">Help</h6>
+                                <ul class="list-unstyled text-muted small mt-3">
+                                    <li class="mb-2">Support</li>
+                                    <li class="mb-2">Privacy</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
