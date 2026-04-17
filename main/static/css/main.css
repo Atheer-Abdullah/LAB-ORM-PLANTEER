@@ -82,3 +82,27 @@ body {
     position: relative;
     z-index: 2;
 }
+
+.detail-img-container {
+    height: 500px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.related-img-wrapper {
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.related-card {
+    transition: transform 0.3s ease;
+}
+
+.related-card:hover {
+    transform: translateY(-5px);
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}

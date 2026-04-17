@@ -1,7 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
 from .models import Plant
 
+def all_plants_view(request: HttpRequest):
+    plants = Plant.objects.all()
+    return render(request, "flora/all_plants.html", {"plants": plants})
 
 def add_plant_view(request: HttpRequest):
     if request.method == "POST":
@@ -18,14 +21,21 @@ def add_plant_view(request: HttpRequest):
             new_plant.image = request.FILES.get("image")
 
         new_plant.save()
-
-        return redirect("flora:add_plant_view")
+        return redirect("flora:all_plants_view")
 
     return render(request, "flora/add_plant.html", {
         "categories": Plant.CategoryChoices.choices
     })
 
-
-def all_plants_view(request: HttpRequest):
-    plants = Plant.objects.all()
-    return render(request, "flora/all_plants.html", {"plants": plants})
+def plant_detail_view(request: HttpRequest, plant_id):
+   
+    plant = get_object_or_404(Plant, id=plant_id)
+    
+    related_plants = Plant.objects.filter(
+        category=plant.category
+    ).exclude(id=plant.id).order_by('?')[:3]
+    
+    return render(request, 'flora/plant_detail.html', {
+        'plant': plant,
+        'related_plants': related_plants
+    })
