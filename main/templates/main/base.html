@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Planteer{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">Planteer</div>
+            <ul>
+                <li><a href="{% url 'main:home_view' %}">Home</a></li>
+                <li><a href="#">All Plants</a></li> <li><a href="{% url 'main:contact_us_view' %}">Contact Us</a></li>
+            </ul>
+            <div class="actions">
+                <a href="#" class="btn-add">Add Plant</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="site-info">
+                <h3>Planteer</h3>
+                <p>Your favorite plant database.</p>
+            </div>
+            </div>
+        <p>&copy; 2024 Planteer. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
