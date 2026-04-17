@@ -1,0 +1,60 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %} Messages - Planteer {% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="fw-bold display-5 mb-5">Messages from Users</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 g-5">
+        
+        <div class="col">
+            <div class="d-flex align-items-start gap-3">
+                <div class="text-dark fs-3 mt-1">
+                    <i class="far fa-user-circle"></i>
+                </div>
+                
+                <div>
+                    <h5 class="fw-bold mb-1">Ahmed Mohammed</h5>
+                    <a href="mailto:moh@gmail.com" class="text-primary text-decoration-none small d-block mb-2">moh@gmail.com</a>
+                    <p class="text-muted small lh-lg" style="max-width: 450px;">
+                        Body text for whatever you'd like to suggest. Add main takeaway points, quotes, anecdotes, or even a very very short story.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="d-flex align-items-start gap-3">
+                <div class="text-dark fs-3 mt-1">
+                    <i class="far fa-user-circle"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1">Ahmed Mohammed</h5>
+                    <a href="mailto:moh@gmail.com" class="text-primary text-decoration-none small d-block mb-2">moh@gmail.com</a>
+                    <p class="text-muted small lh-lg" style="max-width: 450px;">
+                        Body text for whatever you'd like to suggest. Add main takeaway points, quotes, anecdotes, or even a very very short story.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="d-flex align-items-start gap-3">
+                <div class="text-dark fs-3 mt-1">
+                    <i class="far fa-user-circle"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-1">Ahmed Mohammed</h5>
+                    <a href="mailto:moh@gmail.com" class="text-primary text-decoration-none small d-block mb-2">moh@gmail.com</a>
+                    <p class="text-muted small lh-lg" style="max-width: 450px;">
+                        Body text for whatever you'd like to suggest. Add main takeaway points, quotes, anecdotes, or even a very very short story.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
