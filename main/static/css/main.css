@@ -1,0 +1,31 @@
+.object-fit-cover {
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .hero-container {
+        text-align: center;
+    }
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+}
+
+.footer-socials a {
+    text-decoration: none;
+    transition: opacity 0.3s;
+}
+
+.footer-socials a:hover {
+    opacity: 0.7;
+}
+
+.search-box .form-control, 
+.search-box .btn {
+    border-radius: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #000000;
+}

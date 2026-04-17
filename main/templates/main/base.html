@@ -5,38 +5,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Planteer{% endblock %}</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    {% block extra_head %}{% endblock %}
 </head>
 <body>
 
-    <header>
-        <nav>
-            <div class="logo">Planteer</div>
-            <ul>
-                <li><a href="{% url 'main:home_view' %}">Home</a></li>
-                <li><a href="#">All Plants</a></li> <li><a href="{% url 'main:contact_us_view' %}">Contact Us</a></li>
-            </ul>
-            <div class="actions">
-                <a href="#" class="btn-add">Add Plant</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-4">
+        <div class="container d-flex justify-content-between align-items-center">
+            
+            <a class="navbar-brand fw-bold fs-4" href="{% url 'main:home_view' %}">Planteer</a>
+            
+            <div class="d-flex align-items-center gap-4">
+                <ul class="navbar-nav flex-row gap-4 mb-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-medium p-0" href="#">All Plants</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark fw-medium p-0" href="{% url 'main:contact_us_view' %}">Contact Us</a>
+                    </li>
+                </ul>
+                
+                <a href="#" class="btn btn-dark px-4 py-2 rounded-1 fw-bold">Add Plant</a>
             </div>
-        </nav>
-    </header>
 
-    <main>
-        {% block content %}
-        {% endblock %}
+        </div>
+    </nav>
+    <main class="py-5">
+        {% block content %}{% endblock %}
     </main>
 
-    <footer>
-        <div class="footer-content">
-            <div class="site-info">
-                <h3>Planteer</h3>
-                <p>Your favorite plant database.</p>
+<footer class="bg-white border-top py-5 mt-5">
+    <div class="container">
+        <div class="row"> 
+            
+            <div class="col-md-6">
+                <h5 class="fw-bold mb-3">Planteer</h5>
+                <p class="text-muted small mb-4" style="max-width: 300px;">
+                    Brief about the platform and its mission for plant lovers.
+                </p>
+                <div class="d-flex gap-3 fs-5">
+                    <a href="#" class="text-dark"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-dark"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="text-dark"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="text-dark"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
-            </div>
-        <p>&copy; 2024 Planteer. All rights reserved.</p>
-    </footer>
 
+            <div class="col-md-6 d-flex justify-content-end gap-5 text-end"> 
+                
+                <div style="min-width: 100px;">
+                    <h6 class="fw-bold mb-3 small text-uppercase">Categories</h6>
+                    <ul class="list-unstyled text-muted small">
+                        <li class="mb-2">Trees</li>
+                        <li class="mb-2">Fruits</li>
+                        <li class="mb-2">Vegetables</li>
+                    </ul>
+                </div>
+                
+                <div style="min-width: 100px;">
+                    <h6 class="fw-bold mb-3 small text-uppercase">About</h6>
+                    <ul class="list-unstyled text-muted small">
+                        <li class="mb-2">Our Story</li>
+                        <li class="mb-2">Team</li>
+                    </ul>
+                </div>
+
+                <div style="min-width: 100px;">
+                    <h6 class="fw-bold mb-3 small text-uppercase">Help</h6>
+                    <ul class="list-unstyled text-muted small">
+                        <li class="mb-2">Support</li>
+                        <li class="mb-2">Privacy</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
