@@ -1,31 +1,84 @@
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #000000;
+    background-color: #ffffff;
+}
+
 .object-fit-cover {
     object-fit: cover;
 }
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.hero-section .form-control:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+}
+
+
+.hero-section .form-control, 
+.hero-section .btn {
+    border-radius: 0 !important;
+}
+
 
 @media (max-width: 768px) {
     .hero-container {
         text-align: center;
     }
-    .hero-text h1 {
-        font-size: 2.5rem;
+    .hero-section {
+        min-height: 50vh !important; 
+        margin-bottom: 3rem !important;
+    }
+    .hero-section h1 {
+        font-size: 2.5rem !important;
     }
 }
 
 .footer-socials a {
     text-decoration: none;
     transition: opacity 0.3s;
+    color: inherit;
 }
 
 .footer-socials a:hover {
     opacity: 0.7;
 }
 
-.search-box .form-control, 
-.search-box .btn {
-    border-radius: 0;
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
 }
 
-body {
-    font-family: 'Inter', -apple-system, sans-serif;
-    color: #000000;
+.shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+}
+
+.hero-section {
+    position: relative;
+    background: url('../images/main-hero.jpg') center/cover no-repeat;
+    min-height: 65vh;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1); 
+}
+
+
+.hero-content {
+    position: relative;
+    z-index: 2;
 }
