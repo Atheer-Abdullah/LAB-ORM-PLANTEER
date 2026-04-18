@@ -17,9 +17,8 @@ class Plant(models.Model):
         default=CategoryChoices.TREE
     )
     
-    # حقول التحقق (Boolean Fields)
-    is_edible = models.BooleanField(default=False) # هل هي قابلة للأكل؟
-    is_helpful = models.BooleanField(default=True) # هل هي مفيدة؟
+    is_edible = models.BooleanField(default=False) 
+    is_helpful = models.BooleanField(default=True) 
     
     created_at = models.DateTimeField(auto_now_add=True)
 

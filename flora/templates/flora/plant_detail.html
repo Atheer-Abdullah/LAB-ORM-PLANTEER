@@ -8,27 +8,35 @@
     <div class="row g-5 align-items-center mb-5">
         
         <div class="col-md-4">
-            <div class="detail-img-container shadow-sm">
+            <div class="detail-img-container shadow-sm border">
                 {% if plant.image %}
                     <img src="{{ plant.image.url }}" class="img-fluid w-100 h-100 object-fit-cover" alt="{{ plant.name }}">
                 {% else %}
-                    <img src="{% static 'images/plant_default.jpg' %}" class="img-fluid w-100 h-100 object-fit-cover" alt="Default Image">
+                    <img src="/media/images/plant_default.jpg" class="img-fluid w-100 h-100 object-fit-cover" alt="Default Image">
                 {% endif %}
             </div>
         </div>
 
         <div class="col-md-8">
-            <h1 class="display-4 fw-bold mb-1">{{ plant.name }}</h1>
-            <p class="text-muted fs-5 mb-4">{{ plant.category }}</p>
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                    <h1 class="display-4 fw-bold mb-1 text-dark">{{ plant.name }}</h1>
+                    <p class="text-muted fs-5 mb-4">{{ plant.category }}</p>
+                </div>
+                
+                <a href="{% url 'flora:update_plant_view' plant.id %}" class="btn btn-dark rounded-pill px-4 shadow-sm fw-bold border-0">
+                    <i class="fas fa-edit me-2"></i>Edit Plant
+                </a>
+            </div>
             
             <div class="plant-description mb-4">
                 <p class="text-secondary" style="line-height: 1.8;">{{ plant.about }}</p>
             </div>
 
-            <div class="plant-specs">
-                <p class="mb-2"><strong>Native to:</strong> <span class="text-muted">{{ plant.native_to }}</span></p>
-                <p class="mb-2"><strong>Is Edible:</strong> <span class="text-muted">{% if plant.is_edible %} Yes {% else %} No {% endif %}</span></p>
-                <p class="mb-0"><strong>Used For:</strong></p>
+            <div class="plant-specs p-4 bg-light rounded-4 border">
+                <p class="mb-2 text-dark"><strong>Native to:</strong> <span class="text-muted">{{ plant.native_to }}</span></p>
+                <p class="mb-2 text-dark"><strong>Is Edible:</strong> <span class="text-muted">{% if plant.is_edible %} Yes {% else %} No {% endif %}</span></p>
+                <p class="mb-0 text-dark"><strong>Used For:</strong></p>
                 <p class="text-muted">{{ plant.used_for }}</p>
             </div>
         </div>
@@ -36,42 +44,57 @@
 
     <hr class="my-5 opacity-10">
 
-    <section class="related-plants">
-        <h3 class="fw-bold mb-4">Related Plants</h3>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for related in related_plants %}
-            <div class="col">
-                <div class="card h-100 border-0 bg-transparent related-card">
-                    <div class="mb-3 related-img-wrapper">
-                        {% if related.image %}
-                            <img src="{{ related.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ related.name }}">
-                        {% else %}
-                            <img src="{% static 'images/plant_default.jpg' %}" class="w-100 h-100 object-fit-cover" alt="Default">
-                        {% endif %}
-                    </div>
-                    <div class="card-body p-0">
-                        <a href="{% url 'flora:plant_detail_view' related.id %}" class="text-decoration-none text-dark">
-                            <h6 class="fw-bold mb-1">{{ related.name }}</h6>
-                        </a>
-                        <p class="text-muted small mb-1">{{ related.about|truncatechars:50 }}</p>
-                        <p class="fw-bold small text-dark">{{ related.category }}</p>
-                    </div>
+<section class="related-plants">
+    <h3 class="fw-bold mb-4 text-dark">Related Plants</h3>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for related in related_plants %}
+        <div class="col">
+            <div class="card h-100 border-0 bg-transparent related-card">
+                <div class="mb-3 related-img-wrapper shadow-sm border" style="height: 200px; overflow: hidden; border-radius: 15px;">
+                    {% if related.image %}
+                        <img src="{{ related.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ related.name }}">
+                    {% else %}
+                        <img src="/media/images/plant_default.jpg" class="w-100 h-100 object-fit-cover" alt="Default">
+                    {% endif %}
+                </div>
+                <div class="card-body p-0">
+                    <a href="{% url 'flora:plant_detail_view' related.id %}" class="text-decoration-none text-dark">
+                        <h6 class="fw-bold mb-1">{{ related.name }}</h6>
+                    </a>
+                    <p class="text-muted small mb-1">{{ related.about|truncatechars:50 }}</p>
+                    <p class="fw-bold small text-dark">{{ related.category }}</p>
                 </div>
             </div>
-            {% empty %}
-            <div class="col-12">
-                <p class="text-muted">No related plants found in this category.</p>
-            </div>
-            {% endfor %}
         </div>
-    </section>
+        {% empty %}
+        <div class="col-12 text-center py-4">
+            <p class="text-muted">No related plants found in this category.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
 </div>
 
 <style>
     .detail-img-container {
-        height: 400px; /* تقليل الطول ليناسب العرض الجديد */
+        height: 450px;
         border-radius: 20px;
         overflow: hidden;
+    }
+    .btn-dark:hover {
+        background-color: #333;
+        color: #fff;
+    }
+    .related-card:hover img {
+        transform: scale(1.05);
+        transition: transform 0.4s ease;
+    }
+    .related-img-wrapper img {
+        transition: transform 0.4s ease;
+    }
+    
+    .text-success {
+        color: #212529 !important;
     }
 </style>
 {% endblock %}

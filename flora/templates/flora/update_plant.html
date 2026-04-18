@@ -1,0 +1,100 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %} Update {{ plant.name }} - Planteer {% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="editor-container shadow-sm p-5 bg-white rounded border">
+                <div class="editor-header mb-5 text-center">
+                    <h1 class="display-5 fw-bold">Update <span style="color: #198754;">{{ plant.name }}</span></h1>
+                    <p class="text-muted">Modify the plant characteristics or information below.</p>
+                </div>
+                
+                <form action="{% url 'flora:update_plant_view' plant.id %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Plant Name</label>
+                        <input type="text" name="name" class="form-control border-0 bg-light p-3 rounded-3" value="{{ plant.name }}" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">About the Plant</label>
+                        <textarea name="about" class="form-control border-0 bg-light p-3 rounded-3" rows="4" required>{{ plant.about }}</textarea>
+                    </div>
+
+                    <div class="botanical-settings row g-3 p-4 mb-4" style="background: #f8f9fa; border-radius: 15px;">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-uppercase text-muted">Category</label>
+                            <select name="category" class="form-select border-0 shadow-sm">
+                                {% for value, label in categories %}
+                                    <option value="{{ value }}" {% if plant.category == value %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-uppercase text-muted">Usage</label>
+                            <input type="text" name="used_for" class="form-control border-0 shadow-sm" value="{{ plant.used_for }}" required>
+                        </div>
+
+                        <div class="col-md-6 mt-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="is_edible" id="edible" {% if plant.is_edible %}checked{% endif %}>
+                                <label class="form-check-label fw-bold text-muted small text-uppercase ms-2" for="edible">Edible</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="is_helpful" id="helpful" {% if plant.is_helpful %}checked{% endif %}>
+                                <label class="form-check-label fw-bold text-muted small text-uppercase ms-2" for="helpful">Medicinal</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-5 text-center">
+    <p class="small fw-bold text-muted text-uppercase mb-2">Current Photo</p>
+    <div class="mb-3">
+        {% if plant.image %}
+            <img src="{{ plant.image.url }}" class="rounded shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+        {% else %}
+            <img src="/media/images/plant_default.jpg" class="rounded shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
+        {% endif %}
+    </div>
+    <input type="file" name="image" class="form-control form-control-sm">
+</div>
+
+                    <div class="d-flex justify-content-between align-items-center border-top pt-4">
+                        <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="fas fa-trash-alt me-2"></i>Delete
+                        </button>
+
+                        <button type="submit" class="btn btn-success shadow-lg px-5 rounded-pill fw-bold" style="background: #198754;">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-body text-center p-5">
+                <i class="fas fa-exclamation-triangle text-danger display-3 mb-3"></i>
+                <h3 class="fw-bold">Are you sure?</h3>
+                <p class="text-muted">You are about to delete <strong>{{ plant.name }}</strong>. This action cannot be undone.</p>
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button type="button" class="btn btn-light px-4 rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <a href="{% url 'flora:delete_plant_view' plant.id %}" class="btn btn-danger px-4 rounded-pill">Delete Permanently</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
