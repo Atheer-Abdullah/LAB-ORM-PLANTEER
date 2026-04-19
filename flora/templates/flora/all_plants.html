@@ -30,7 +30,7 @@
                         {{ plant.about|truncatechars:80 }}
                     </p>
                     
-                    <p class="fw-bold small mb-0">{{ plant.category }}</p>
+                    <p class="fw-bold small mb-0">{{ plant.get_category_display }}</p>
 
                     <div class="d-flex justify-content-between align-items-center mt-2">
                         <div class="text-muted small">

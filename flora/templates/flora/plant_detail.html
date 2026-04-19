@@ -21,20 +21,27 @@
             <div class="d-flex justify-content-between align-items-start mb-2">
                 <div>
                     <h1 class="display-4 fw-bold mb-1 text-dark">{{ plant.name }}</h1>
-                    <p class="text-muted fs-5 mb-4">{{ plant.category }}</p>
+                    
+                    <span class="badge bg-dark rounded-pill px-3 py-2 mb-3">
+                        {{ plant.get_category_display }}
+                    </span>
                 </div>
                 
                 <a href="{% url 'flora:update_plant_view' plant.id %}" class="btn btn-dark rounded-pill px-4 shadow-sm fw-bold border-0">
                     <i class="fas fa-edit me-2"></i>Edit Plant
                 </a>
             </div>
+
+            <div class="alert alert-info border-0 shadow-sm rounded-4 mb-4 py-3">
+                <i class="fas fa-info-circle me-2"></i> {{ plant.get_status_message }}
+            </div>
             
             <div class="plant-description mb-4">
-                <p class="text-secondary" style="line-height: 1.8;">{{ plant.about }}</p>
+                <p class="text-secondary" style="line-height: 1.8; font-size: 1.1rem;">{{ plant.about }}</p>
             </div>
 
             <div class="plant-specs p-4 bg-light rounded-4 border">
-                <p class="mb-2 text-dark"><strong>Native to:</strong> <span class="text-muted">{{ plant.native_to }}</span></p>
+                <p class="mb-2 text-dark"><strong>Category:</strong> <span class="text-muted">{{ plant.get_category_display }}</span></p>
                 <p class="mb-2 text-dark"><strong>Is Edible:</strong> <span class="text-muted">{% if plant.is_edible %} Yes {% else %} No {% endif %}</span></p>
                 <p class="mb-0 text-dark"><strong>Used For:</strong></p>
                 <p class="text-muted">{{ plant.used_for }}</p>
@@ -62,7 +69,7 @@
                         <h6 class="fw-bold mb-1">{{ related.name }}</h6>
                     </a>
                     <p class="text-muted small mb-1">{{ related.about|truncatechars:50 }}</p>
-                    <p class="fw-bold small text-dark">{{ related.category }}</p>
+                    <p class="fw-bold small text-dark">{{ related.get_category_display }}</p>
                 </div>
             </div>
         </div>

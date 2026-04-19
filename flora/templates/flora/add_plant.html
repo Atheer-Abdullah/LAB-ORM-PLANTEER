@@ -15,8 +15,8 @@
                 {% csrf_token %}
                 
                 <div class="form-group-premium mb-4">
-                    <input type="text" name="name" class="title-input w-100" placeholder="Scientific or Common Name..." required 
-                           style="border: none; border-bottom: 2px solid #eee; font-size: 2rem; outline: none; padding-bottom: 10px;">
+                    <input type="text" name="name" class="title-input w-100" placeholder="Scientific or Common Name..." required minlength="3" maxlength="20" style="border: none; border-bottom: 2px solid #eee; font-size: 2rem; outline: none; padding-bottom: 10px;">
+                         
                 </div>
 
                 <div class="form-group-premium mb-4">

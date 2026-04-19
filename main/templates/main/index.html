@@ -34,31 +34,43 @@
             </div>
         </div>
 
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for plant in plants %}
-            <div class="col">
-                <div class="card h-100 border-0 bg-transparent">
-                    <div class="mb-3" style="height: 200px; overflow: hidden; border-radius: 12px;">
-                        {% if plant.image and plant.image.url %}
-                            <img src="{{ plant.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ plant.name }}">
-                        {% else %}
-                            <img src="/media/images/plant_default.jpg" class="w-100 h-100 object-fit-cover" alt="Default Image">
-                        {% endif %}
-                    </div>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for plant in plants %}
+    <div class="col">
+        <div class="card h-100 border-0 bg-transparent">
+            <a href="{% url 'flora:plant_detail_view' plant.id %}" class="text-decoration-none">
+                <div class="mb-3" style="height: 200px; overflow: hidden; border-radius: 12px;">
+                    {% if plant.image and plant.image.url %}
+                        <img src="{{ plant.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ plant.name }}">
+                    {% else %}
+                        <img src="/media/images/plant_default.jpg" class="w-100 h-100 object-fit-cover" alt="Default Image">
+                    {% endif %}
+                </div>
+            </a>
 
-                    <div class="card-body p-0">
-                        <h6 class="fw-bold mb-1" style="font-size: 1.1rem;">{{ plant.name }}</h6>
-                        <p class="text-muted small mb-1" style="line-height: 1.3;">{{ plant.about|truncatechars:60 }}</p>
-                        <p class="fw-bold small mb-0 text-dark">{{ plant.category }}</p>
-                    </div>
+            <div class="card-body p-0">
+                <a href="{% url 'flora:plant_detail_view' plant.id %}" class="text-decoration-none text-dark">
+                    <h6 class="fw-bold mb-1" style="font-size: 1.1rem;">{{ plant.name }}</h6>
+                </a>
+                
+                <p class="text-muted small mb-1" style="line-height: 1.3;">{{ plant.about|truncatechars:60 }}</p>
+                
+                <p class="fw-bold small mb-2 text-dark">{{ plant.get_category_display }}</p>
+
+                <div class="mt-2">
+                    <a href="{% url 'flora:plant_detail_view' plant.id %}" class="btn btn-dark btn-sm rounded-pill px-3" style="font-size: 0.75rem;">
+                        More Detail
+                    </a>
                 </div>
             </div>
-            {% empty %}
-            <div class="col-12">
-                <p class="text-muted">No plants documented yet.</p>
-            </div>
-            {% endfor %}
         </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p class="text-muted">No plants documented yet.</p>
+    </div>
+    {% endfor %}
+</div>
     </section>
 
 </div>
