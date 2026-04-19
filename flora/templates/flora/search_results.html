@@ -18,7 +18,7 @@
                     
                     <select name="order_by" class="form-select border-0 bg-light shadow-sm" style="max-width: 150px;">
                         <option value="">Order By</option>
-                        <option value="name" {% if request.GET.order_by == 'name' %} selected {% endif %}>Name (A-Z)</option>
+                        <option value="name" {% if request.GET.order_by == 'name' %} selected {% endif %}>Alphabetical</option>
                         <option value="created_at" {% if request.GET.order_by == 'created_at' %} selected {% endif %}>Newest</option>
                     </select>
                     

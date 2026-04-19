@@ -1,12 +1,14 @@
 from django.db import models
 
+# Create your models here.
+
 class Plant(models.Model):
     class CategoryChoices(models.TextChoices):
         TREE = 'Tree', 'Tree'
         FRUIT = 'Fruit', 'Fruit'
         VEGETABLE = 'Vegetable', 'Vegetable'
 
-    # الحقول الأساسية
+    
     name = models.CharField(max_length=200)
     about = models.TextField()
     used_for = models.TextField()

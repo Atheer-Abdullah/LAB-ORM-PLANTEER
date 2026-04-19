@@ -1,10 +1,22 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from .models import Plant
 
+# Create your views here.
+
 def all_plants_view(request: HttpRequest):
-    plants = Plant.objects.all()
-    return render(request, "flora/all_plants.html", {"plants": plants})
+    category = request.GET.get("category")
+    
+    if category:
+        plants = Plant.objects.filter(category=category)
+    else:
+        plants = Plant.objects.all()
+
+    return render(request, "flora/all_plants.html", {
+        "plants": plants,
+        "categories": Plant.CategoryChoices.choices,
+        "selected_category": category
+    })
 
 def add_plant_view(request: HttpRequest):
     if request.method == "POST":
@@ -16,10 +28,8 @@ def add_plant_view(request: HttpRequest):
             is_edible="is_edible" in request.POST,
             is_helpful="is_helpful" in request.POST,
         )
-
         if request.FILES.get("image"):
             new_plant.image = request.FILES.get("image")
-
         new_plant.save()
         return redirect("flora:all_plants_view")
 
@@ -27,8 +37,10 @@ def add_plant_view(request: HttpRequest):
         "categories": Plant.CategoryChoices.choices
     })
 
-def plant_detail_view(request: HttpRequest, plant_id):
-    plant = get_object_or_404(Plant, id=plant_id)
+
+def plant_detail_view(request: HttpRequest, plant_id: int):
+    
+    plant = Plant.objects.get(pk=plant_id)
     
     related_plants = Plant.objects.filter(
         category=plant.category
@@ -39,19 +51,20 @@ def plant_detail_view(request: HttpRequest, plant_id):
         'related_plants': related_plants
     })
 
-def update_plant_view(request: HttpRequest, plant_id):
-    plant = get_object_or_404(Plant, id=plant_id)
+def update_plant_view(request: HttpRequest, plant_id: int):
+    plant = Plant.objects.get(pk=plant_id)
     
     if request.method == "POST":
-        plant.name = request.POST.get("name")
-        plant.about = request.POST.get("about")
-        plant.used_for = request.POST.get("used_for")
-        plant.category = request.POST.get("category")
+        
+        plant.name = request.POST["name"]
+        plant.about = request.POST["about"]
+        plant.used_for = request.POST["used_for"]
+        plant.category = request.POST["category"]
         plant.is_edible = "is_edible" in request.POST
         plant.is_helpful = "is_helpful" in request.POST
         
-        if request.FILES.get("image"):
-            plant.image = request.FILES.get("image")
+        if "image" in request.FILES:
+            plant.image = request.FILES["image"]
             
         plant.save()
         return redirect("flora:plant_detail_view", plant_id=plant.id)
@@ -61,7 +74,24 @@ def update_plant_view(request: HttpRequest, plant_id):
         "categories": Plant.CategoryChoices.choices
     })
 
-def delete_plant_view(request: HttpRequest, plant_id):
-    plant = get_object_or_404(Plant, id=plant_id)
+def delete_plant_view(request: HttpRequest, plant_id: int):
+    plant = Plant.objects.get(pk=plant_id)
     plant.delete()
     return redirect("flora:all_plants_view")
+
+def search_plants_view(request: HttpRequest):
+    if "search" in request.GET and len(request.GET["search"]) >= 3:
+        search_text = request.GET["search"]
+        
+        plants = Plant.objects.filter(name__icontains=search_text)
+        
+        if "order_by" in request.GET:
+            if request.GET["order_by"] == "name":
+                plants = plants.order_by("name")
+            elif request.GET["order_by"] == "created_at": 
+                plants = plants.order_by("-created_at")   
+            
+    else:
+        plants = []
+
+    return render(request, "flora/search_results.html", {"plants": plants})

@@ -8,6 +8,29 @@
     <div class="row mb-5">
         <div class="col-12">
             <h1 class="fw-bold display-5">All Plants</h1>
+        <div class="row mb-4 gy-3 align-items-center"> <div class="col-12 col-lg-8"> <div class="d-flex gap-2 flex-wrap">
+            <a href="{% url 'flora:all_plants_view' %}" 
+               class="btn {% if not selected_category %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill px-3">
+               All
+            </a>
+            {% for value, label in categories %}
+            <a href="{% url 'flora:all_plants_view' %}?category={{ value }}" 
+               class="btn {% if selected_category == value %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill px-3">
+               {{ label }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-4"> <form action="{% url 'flora:search_plants_view' %}" method="GET" class="d-flex shadow-sm rounded-pill overflow-hidden">
+            <input type="text" name="search" class="form-control border-0 ps-3" placeholder="Quick search..." style="border-radius: 0;">
+            <button class="btn btn-dark px-3" type="submit" style="border-radius: 0;">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+<hr class="mb-5">
         </div>
     </div>
 
@@ -53,14 +76,4 @@
         {% endfor %}
     </div>
 </div>
-
-<style>
-    .card:hover {
-        transform: translateY(-5px);
-        transition: transform 0.3s ease;
-    }
-    h1 {
-        letter-spacing: -1px;
-    }
-</style>
 {% endblock %}
