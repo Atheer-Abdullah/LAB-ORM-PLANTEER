@@ -7,7 +7,7 @@
 <div class="container py-5">
     <div class="row g-5 align-items-center mb-5">
         <div class="col-md-4">
-            <div class="detail-img-container shadow-sm border">
+            <div class="detail-img-container shadow-sm border" style="border-radius: 20px; overflow: hidden;">
                 {% if plant.image %}
                     <img src="{{ plant.image.url }}" class="img-fluid w-100 h-100 object-fit-cover" alt="{{ plant.name }}">
                 {% else %}
@@ -19,8 +19,8 @@
         <div class="col-md-8">
             <div class="d-flex justify-content-between align-items-start mb-2">
                 <div>
-                    <h1 class="display-4 fw-bold mb-1 text-dark">{{ plant.name }}</h1>
-                    <span class="badge bg-dark rounded-pill px-3 py-2 mb-3">
+                    <h1 class="display-4 fw-bold mb-1 main-title">{{ plant.name }}</h1>
+                    <span class="badge bg-success rounded-pill px-3 py-2 mb-3">
                         {{ plant.get_category_display }}
                     </span>
                 </div>
@@ -30,19 +30,19 @@
                 </a>
             </div>
 
-            <div class="alert alert-info border-0 shadow-sm rounded-4 mb-4 py-3">
+            <div class="alert alert-info border-0 shadow-sm rounded-4 mb-4 py-3 bg-opacity-10">
                 <i class="fas fa-info-circle me-2"></i> {{ plant.get_status_message }}
             </div>
             
             <div class="plant-description mb-4">
-                <p class="text-secondary" style="line-height: 1.8; font-size: 1.1rem;">{{ plant.about }}</p>
+                <p class="plant-text" style="line-height: 1.8; font-size: 1.1rem;">{{ plant.about }}</p>
             </div>
 
-            <div class="plant-specs p-4 bg-light rounded-4 border">
-                <p class="mb-2 text-dark"><strong>Category:</strong> <span class="text-muted">{{ plant.get_category_display }}</span></p>
-                <p class="mb-2 text-dark"><strong>Is Edible:</strong> <span class="text-muted">{% if plant.is_edible %} Yes {% else %} No {% endif %}</span></p>
-                <p class="mb-0 text-dark"><strong>Used For:</strong></p>
-                <p class="text-muted">{{ plant.used_for }}</p>
+            <div class="plant-specs p-4 rounded-4 border card-bg shadow-sm">
+                <p class="mb-2"><strong>Category:</strong> <span class="plant-text">{{ plant.get_category_display }}</span></p>
+                <p class="mb-2"><strong>Is Edible:</strong> <span class="plant-text">{% if plant.is_edible %} Yes {% else %} No {% endif %}</span></p>
+                <p class="mb-0"><strong>Used For:</strong></p>
+                <p class="plant-text">{{ plant.used_for }}</p>
             </div>
         </div>
     </div>
@@ -50,24 +50,26 @@
     <hr class="my-5 opacity-10">
 
     <section class="related-plants mb-5">
-        <h3 class="fw-bold mb-4 text-dark">Related Plants</h3>
+        <h3 class="fw-bold mb-4">Related Plants</h3>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% for related in related_plants %}
             <div class="col">
-                <div class="card h-100 border-0 bg-transparent related-card">
-                    <div class="mb-3 related-img-wrapper shadow-sm border" style="height: 200px; overflow: hidden; border-radius: 15px;">
-                        {% if related.image %}
-                            <img src="{{ related.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ related.name }}">
-                        {% else %}
-                            <img src="/media/images/plant_default.jpg" class="w-100 h-100 object-fit-cover" alt="Default">
-                        {% endif %}
-                    </div>
+                <div class="card h-100 border-0 bg-transparent">
+                    <a href="{% url 'flora:plant_detail_view' related.id %}" class="text-decoration-none">
+                        <div class="mb-3" style="height: 200px; overflow: hidden; border-radius: 12px;">
+                            {% if related.image %}
+                                <img src="{{ related.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ related.name }}">
+                            {% else %}
+                                <img src="/media/images/plant_default.jpg" class="w-100 h-100 object-fit-cover" alt="Default">
+                            {% endif %}
+                        </div>
+                    </a>
                     <div class="card-body p-0">
-                        <a href="{% url 'flora:plant_detail_view' related.id %}" class="text-decoration-none text-dark">
-                            <h6 class="fw-bold mb-1">{{ related.name }}</h6>
+                        <a href="{% url 'flora:plant_detail_view' related.id %}" class="text-decoration-none" style="color: inherit;">
+                            <h6 class="fw-bold mb-1 plant-title" style="font-size: 1.1rem;">{{ related.name }}</h6>
                         </a>
-                        <p class="text-muted small mb-1">{{ related.about|truncatechars:50 }}</p>
-                        <p class="fw-bold small text-dark">{{ related.get_category_display }}</p>
+                        <p class="small mb-1 plant-text" style="line-height: 1.3;">{{ related.about|truncatechars:50 }}</p>
+                        <p class="fw-bold small plant-category">{{ related.get_category_display }}</p>
                     </div>
                 </div>
             </div>
@@ -82,44 +84,44 @@
     <hr class="my-5 opacity-10">
 
     <section class="comments-section">
-        <h3 class="fw-bold mb-4 text-dark">Comments ({{ comments.count }})</h3>
+        <h3 class="fw-bold mb-4">Comments ({{ comments.count }})</h3>
 
         <div class="d-flex flex-column gap-3 mb-5">
             {% for comment in comments %}
-                <div class="d-flex flex-column p-4 shadow-sm border rounded-4 bg-white">
+                <div class="d-flex flex-column p-4 shadow-sm border rounded-4 card-bg">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h5 class="fw-bold mb-0 text-success">{{ comment.name }}</h5>
-                        <small class="text-muted"><i class="far fa-clock me-1"></i>{{ comment.created_at|date:"M d, Y H:i" }}</small>
+                        <small class="text-muted"><i class="far fa-clock me-1"></i>{{ comment.created_at|date:"M d, Y" }}</small>
                     </div>
-                    <p class="mb-0 text-secondary">{{ comment.content }}</p>
+                    <p class="mb-0 plant-text">{{ comment.content }}</p>
                 </div>
             {% empty %}
-                <div class="text-center py-4 bg-light rounded-4 border border-dashed">
-                    <p class="text-muted mb-0">No comments yet. Be the first to share your thoughts!</p>
+                <div class="text-center py-4 rounded-4 border border-dashed">
+                    <p class="text-muted mb-0">No comments yet.</p>
                 </div>
             {% endfor %}
         </div>
 
-        <div class="add-comment-wrapper p-4 bg-light rounded-4 border">
-            <h4 class="fw-bold mb-3 text-dark">Leave a Comment</h4>
+        <div class="add-comment-wrapper p-4 rounded-4 border card-bg">
+            <h4 class="fw-bold mb-3">Leave a Comment</h4>
             <form class="d-flex flex-column gap-3" action="{% url 'flora:add_comment_view' plant.id %}" method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label class="form-label fw-bold small text-muted">Full Name</label>
+                    <label class="form-label fw-bold small opacity-75">Full Name</label>
                     <input class="form-control border-0 shadow-sm" name="name" required minlength="3" placeholder="Enter your name..."/>
                 </div>
                 <div class="form-group">
-                    <label class="form-label fw-bold small text-muted">Your Comment</label>
-                    <textarea class="form-control border-0 shadow-sm" name="content" rows="4" required minlength="3" placeholder="What do you think about this plant?"></textarea>
+                    <label class="form-label fw-bold small opacity-75">Your Comment</label>
+                    <textarea class="form-control border-0 shadow-sm" name="content" rows="4" required minlength="3" placeholder="What do you think?"></textarea>
                 </div>
                 
                 <div class="text-end">
                     <button type="submit" class="btn btn-success rounded-pill px-5 py-2 fw-bold shadow-sm">
-                        <i class="fas fa-paper-plane me-2"></i>Post Comment
+                        Post Comment
                     </button>
                 </div>
             </form>
         </div>
     </section>
-    </div>
+</div>
 {% endblock %}
