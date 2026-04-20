@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
-from .models import Plant
+from .models import Plant, Comment
 
 # Create your views here.
 
@@ -37,10 +37,9 @@ def add_plant_view(request: HttpRequest):
         "categories": Plant.CategoryChoices.choices
     })
 
-
 def plant_detail_view(request: HttpRequest, plant_id: int):
-    
     plant = Plant.objects.get(pk=plant_id)
+    comments = Comment.objects.filter(plant=plant).order_by('-created_at')
     
     related_plants = Plant.objects.filter(
         category=plant.category
@@ -48,14 +47,26 @@ def plant_detail_view(request: HttpRequest, plant_id: int):
     
     return render(request, 'flora/plant_detail.html', {
         'plant': plant,
+        'comments': comments,
         'related_plants': related_plants
     })
+
+def add_comment_view(request: HttpRequest, plant_id: int):
+    if request.method == "POST":
+        plant_object = Plant.objects.get(pk=plant_id)
+        new_comment = Comment(
+            plant=plant_object,
+            name=request.POST["name"],
+            content=request.POST["content"]
+        )
+        new_comment.save()
+    
+    return redirect("flora:plant_detail_view", plant_id=plant_id)
 
 def update_plant_view(request: HttpRequest, plant_id: int):
     plant = Plant.objects.get(pk=plant_id)
     
     if request.method == "POST":
-        
         plant.name = request.POST["name"]
         plant.about = request.POST["about"]
         plant.used_for = request.POST["used_for"]
@@ -82,7 +93,6 @@ def delete_plant_view(request: HttpRequest, plant_id: int):
 def search_plants_view(request: HttpRequest):
     if "search" in request.GET and len(request.GET["search"]) >= 3:
         search_text = request.GET["search"]
-        
         plants = Plant.objects.filter(name__icontains=search_text)
         
         if "order_by" in request.GET:
@@ -90,7 +100,6 @@ def search_plants_view(request: HttpRequest):
                 plants = plants.order_by("name")
             elif request.GET["order_by"] == "created_at": 
                 plants = plants.order_by("-created_at")   
-            
     else:
         plants = []
 
