@@ -5,74 +5,86 @@
 
 {% block content %}
 <div class="container mt-5"> 
-    <div class="row mb-5">
-        <div class="col-12">
-            <h1 class="fw-bold display-5">All Plants</h1>
-        <div class="row mb-4 gy-3 align-items-center"> <div class="col-12 col-lg-8"> <div class="d-flex gap-2 flex-wrap">
-            <a href="{% url 'flora:all_plants_view' %}" 
-               class="btn {% if not selected_category %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill px-3">
-               All
-            </a>
-            {% for value, label in categories %}
-            <a href="{% url 'flora:all_plants_view' %}?category={{ value }}" 
-               class="btn {% if selected_category == value %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill px-3">
-               {{ label }}
-            </a>
-            {% endfor %}
+    <div class="row mb-4 gy-3 align-items-center">
+        <div class="col-12 col-lg-8">
+            <div class="d-flex gap-3 flex-wrap align-items-center">
+                
+                <div class="dropdown">
+                    <button class="btn {% if selected_country %}btn-success{% else %}btn-outline-success{% endif %} rounded-pill px-4 dropdown-toggle d-flex align-items-center shadow-sm" 
+                            type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-globe-asia me-2"></i>
+                        {% if selected_country and selected_country != 'all' %}
+                            {% for country in countries %}
+                                {% if country.id|stringformat:'i' == selected_country %}{{ country.name }}{% endif %}
+                            {% endfor %}
+                        {% else %}
+                            Countries
+                        {% endif %}
+                    </button>
+                    <ul class="dropdown-menu shadow border-0 mt-2 rounded-3">
+                        <li><a class="dropdown-item" href="?{% if selected_category %}category={{ selected_category }}{% endif %}">All Countries</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% for country in countries %}
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" 
+                               href="?country={{ country.id }}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                                {% if country.flag %}
+                                    <img src="{{ country.flag.url }}" class="me-2 rounded-1" style="width:20px; height:13px; object-fit:cover;">
+                                {% endif %}
+                                {{ country.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn {% if selected_category %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill px-4 dropdown-toggle shadow-sm" 
+                            type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-filter me-2"></i>
+                        {% if selected_category %}
+                            {{ selected_category|title }}
+                        {% else %}
+                            Categories
+                        {% endif %}
+                    </button>
+                    <ul class="dropdown-menu shadow border-0 mt-2 rounded-3">
+                        <li><a class="dropdown-item" href="?{% if selected_country %}country={{ selected_country }}{% endif %}">All Categories</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        {% for value, label in categories %}
+                        <li>
+                            <a class="dropdown-item" 
+                               href="?category={{ value }}{% if selected_country %}&country={{ selected_country }}{% endif %}">
+                                {{ label }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <form action="{% url 'flora:search_plants_view' %}" method="GET" class="d-flex shadow-sm rounded-pill overflow-hidden border">
+                <input type="text" name="search" class="form-control border-0 ps-3" placeholder="Quick search..." style="border-radius: 0;">
+                <button class="btn btn-dark px-3" type="submit" style="border-radius: 0;">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
     </div>
 
-    <div class="col-12 col-lg-4"> <form action="{% url 'flora:search_plants_view' %}" method="GET" class="d-flex shadow-sm rounded-pill overflow-hidden">
-            <input type="text" name="search" class="form-control border-0 ps-3" placeholder="Quick search..." style="border-radius: 0;">
-            <button class="btn btn-dark px-3" type="submit" style="border-radius: 0;">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
-    </div>
-</div>
-<hr class="mb-5">
-        </div>
-    </div>
+    <hr class="mb-5">
 
     <div class="row g-5"> 
         {% for plant in plants %}
-        <div class="col-lg-4 col-md-6">
-            <div class="card h-100 border-0 bg-transparent">
-                <div class="position-relative mb-3" style="height: 220px; overflow: hidden; border-radius: 12px;">
-                    {% if plant.image %}
-                        <img src="{{ plant.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ plant.name }}">
-                    {% else %}
-                        <img src="/media/images/plant_default.jpg" class="w-100 h-100 object-fit-cover" alt="Default Image">
-                    {% endif %}
-                </div>
-
-                <div class="card-body p-0">
-                    <h5 class="fw-bold mb-1" style="font-size: 1.25rem;">{{ plant.name }}</h5>
-                    
-                    <p class="text-muted small mb-2" style="line-height: 1.4;">
-                        {{ plant.about|truncatechars:80 }}
-                    </p>
-                    
-                    <p class="fw-bold small mb-0">{{ plant.get_category_display }}</p>
-
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <div class="text-muted small">
-                            {% if plant.is_edible %}<i class="fas fa-utensils me-2" title="Edible"></i>{% endif %}
-                            {% if plant.is_helpful %}<i class="fas fa-medkit" title="Medicinal"></i>{% endif %}
-                        </div>
-                        
-                        <a href="{% url 'flora:plant_detail_view' plant.id %}" class="btn btn-dark btn-sm rounded-pill px-3">
-                            More
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+            {% include "flora/partials/plant_card.html" %}
         {% empty %}
-        <div class="col-12 text-center py-5">
-            <p class="text-muted fs-5">No plants documented yet.</p>
-            <a href="{% url 'flora:add_plant_view' %}" class="btn btn-dark rounded-pill px-4">Add Plant</a>
-        </div>
+            <div class="col-12 text-center py-5">
+                <p class="text-muted fs-5">No plants documented yet.</p>
+                <a href="{% url 'flora:add_plant_view' %}" class="btn btn-dark rounded-pill px-4">Add Plant</a>
+            </div>
         {% endfor %}
     </div>
 </div>

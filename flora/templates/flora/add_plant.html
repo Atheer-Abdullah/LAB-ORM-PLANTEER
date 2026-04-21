@@ -10,98 +10,27 @@
             <div class="editor-container shadow-sm p-4 p-md-5 bg-body rounded border">
                 
                 <div class="editor-header mb-4 mb-md-5 text-center">
+                    <div class="icon-badge mb-3 d-inline-block p-3 rounded-circle bg-success bg-opacity-10">
+                        <i class="fas fa-leaf text-success fs-2"></i>
+                    </div>
                     <h1 class="display-5 fw-bold text-body-emphasis">New <span style="color: #198754;">Plant.</span></h1>
                     <p class="text-secondary">Document a new species and its characteristics in our botanical database.</p>
                 </div>
                 
-                <form action="{% url 'flora:add_plant_view' %}" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    
-                    <div class="form-group-premium mb-4">
-                        <input type="text" name="name" class="title-input w-100 bg-transparent text-body-emphasis" 
-                               placeholder="Scientific or Common Name..." required minlength="3" maxlength="20" 
-                               style="border: none; border-bottom: 2px solid #eee; font-size: clamp(1.5rem, 5vw, 2rem); outline: none; padding-bottom: 10px;">
-                    </div>
-
-                    <div class="form-group-premium mb-4">
-                        <textarea name="about" class="content-input w-100 bg-transparent text-body-emphasis" 
-                                  placeholder="Tell us about this plant's history and nature..." required 
-                                  style="border: none; min-height: 150px; font-size: 1.1rem; outline: none; resize: none;"></textarea>
-                    </div>
-
-                    <div class="botanical-settings row g-3 p-3 p-md-4 mb-4" style="background: rgba(0,0,0,0.03); border-radius: 15px;">
-                        <div class="col-12 col-md-6">
-                            <label class="form-label fw-bold small text-uppercase text-secondary">Category</label>
-                            <select name="category" class="form-select border-0 shadow-sm">
-                                {% for value, label in categories %}
-                                    <option value="{{ value }}">{{ label }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        
-                        <div class="col-12 col-md-6">
-                            <label class="form-label fw-bold small text-uppercase text-secondary">Usage</label>
-                            <input type="text" name="used_for" class="form-control border-0 shadow-sm" placeholder="Medicinal, Decor, etc." required>
-                        </div>
-
-                        <div class="col-6 d-flex align-items-center mt-3 mt-md-4">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="is_edible" id="edible">
-                                <label class="form-check-label fw-bold text-secondary small text-uppercase ms-1 ms-md-2" for="edible">Edible</label>
-                            </div>
-                        </div>
-                        <div class="col-6 d-flex align-items-center mt-3 mt-md-4">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="is_helpful" id="helpful">
-                                <label class="form-check-label fw-bold text-secondary small text-uppercase ms-1 ms-md-2" for="helpful">Helpful</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label fw-bold small text-uppercase text-secondary mb-2">Native Countries</label>
-                        <div class="countries-container d-flex flex-wrap gap-3 p-3 border rounded-3 bg-white shadow-sm" style="max-height: 200px; overflow-y: auto;">
-                            {% for country in countries %}
-                                <div class="form-check form-check-inline m-0">
-                                    <input type="checkbox" 
-                                           name="countries" 
-                                           id="country_{{ country.id }}" 
-                                           value="{{ country.id }}" 
-                                           class="form-check-input">
-                                    <label for="country_{{ country.id }}" class="form-check-label small d-flex align-items-center">
-                                        {% if country.flag %}
-                                            <img src="{{ country.flag.url }}" width="20" height="13" class="me-2 shadow-sm" alt="flag">
-                                        {% endif %}
-                                        {{ country.name }}
-                                    </label>
-                                </div>
-                            {% empty %}
-                                <p class="text-muted small mb-0">No countries available in database.</p>
-                            {% endfor %}
-                        </div>
-                        <div class="form-text text-muted small mt-1">Select all countries where this plant originates.</div>
-                    </div>
-
-                    <div class="form-footer d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mt-4">
-                        <div class="w-100 w-sm-auto text-center">
-                            <label for="id_image" class="btn-action shadow-sm w-100" style="cursor: pointer; padding: 10px 20px; border-radius: 30px; border: 1px solid #ddd; background: var(--bs-body-bg); color: var(--bs-body-color); display: inline-block;">
-                                <i class="fas fa-image me-1 text-success"></i> Plant Photo
-                            </label>
-                            <input type="file" name="image" id="id_image" accept="image/*" style="display: none;">
-                        </div>
-
-                        <button type="submit" class="btn btn-success shadow-lg w-100 w-sm-auto px-5 rounded-pill fw-bold" style="padding: 12px 40px; transition: all 0.3s ease;">
-                            <i class="fas fa-leaf me-2"></i>Publish Plant
-                        </button>
-                    </div>
-                </form>
+<form action="{% url 'flora:add_plant_view' %}" method="POST" enctype="multipart/form-data">
+    
+    {% include "flora/partials/plant_form.html" %}
+    
+    <button type="submit" class="btn btn-success mt-3">
+        Add Plant
+    </button>
+</form>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Script to show file name on label after selection
     document.getElementById('id_image').addEventListener('change', function() {
         if (this.files && this.files.length > 0) {
             const label = document.querySelector(`label[for="${this.id}"]`);

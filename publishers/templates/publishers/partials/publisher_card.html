@@ -1,0 +1,26 @@
+<div class="col">
+    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden publisher-card-hover">
+        
+        <div class="p-5 d-flex align-items-center justify-content-center bg-light" style="height: 220px;">
+            {% if publisher.logo %}
+                <img src="{{ publisher.logo.url }}" class="img-fluid rounded-3" style="max-height: 120px; object-fit: contain;" alt="{{ publisher.name }}">
+            {% else %}
+                <i class="fas fa-building display-1 text-muted opacity-25"></i>
+            {% endif %}
+        </div>
+
+        <div class="card-body p-4">
+            <h4 class="card-title fw-bold mb-2">{{ publisher.name }}</h4>
+            <p class="card-text text-muted small mb-4">
+                {{ publisher.description|truncatechars:90 }}
+            </p>
+            
+            <div class="border-top pt-3 mt-auto">
+                <a href="{% url 'publishers:publisher_detail_view' publisher.id %}" class="btn text-success fw-bold p-0">
+                    View Profile <i class="fas fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

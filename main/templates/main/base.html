@@ -12,24 +12,17 @@
 </head>
 <body class="{% if request.COOKIES.mode == 'dark' %}bg-dark text-white{% endif %}">
 
-<nav class="navbar navbar-expand-lg border-bottom py-4 {% if request.COOKIES.mode == 'dark' %}navbar-dark bg-dark{% else %}navbar-light bg-white{% endif %}">
-    <div class="container d-flex justify-content-between align-items-center">
+<nav class="navbar navbar-expand-lg border-bottom py-3 {% if request.COOKIES.mode == 'dark' %}navbar-dark bg-dark{% else %}navbar-light bg-white{% endif %}">
+    <div class="container">
         <a class="navbar-brand fw-bold fs-4" href="{% url 'main:home_view' %}">Planteer</a>
-        
-        <div class="d-flex align-items-center gap-4">
-            <div class="me-2">
-                {% if request.COOKIES.mode == "dark" %}
-                    <a href="{% url 'main:mode_view' 'light' %}?next={{ request.path }}" class="text-warning text-decoration-none">
-                        <i class="fas fa-sun"></i> Light
-                    </a>
-                {% else %}
-                    <a href="{% url 'main:mode_view' 'dark' %}?next={{ request.path }}" class="text-dark text-decoration-none">
-                        <i class="fas fa-moon"></i> Dark
-                    </a>
-                {% endif %}
-            </div>
 
-            <ul class="navbar-nav flex-row gap-3 gap-md-4 mb-0">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center gap-3 gap-lg-4">
                 <li class="nav-item">
                     <a class="nav-link fw-medium p-0" href="{% url 'main:home_view' %}">Home</a>
                 </li>
@@ -39,8 +32,28 @@
                 <li class="nav-item">
                     <a class="nav-link fw-medium p-0" href="{% url 'main:contact_us_view' %}">Contact Us</a>
                 </li>
+                
+                <li class="nav-item ms-lg-2">
+                    {% if request.COOKIES.mode == "dark" %}
+                        <a href="{% url 'main:mode_view' 'light' %}?next={{ request.path }}" class="text-warning text-decoration-none">
+                            <i class="fas fa-sun"></i> <span class="d-lg-none">Light Mode</span>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'main:mode_view' 'dark' %}?next={{ request.path }}" class="text-dark text-decoration-none">
+                            <i class="fas fa-moon"></i> <span class="d-lg-none">Dark Mode</span>
+                        </a>
+                    {% endif %}
+                </li>
             </ul>
-            <a href="{% url 'flora:add_plant_view' %}" class="btn btn-dark px-3 px-md-4 py-2 rounded-1 fw-bold small">Add Plant</a>
+
+            <div class="d-flex flex-column flex-lg-row gap-2">
+                <a href="{% url 'publishers:add_publisher_view' %}" class="btn {% if request.COOKIES.mode == 'dark' %}btn-light{% else %}btn-dark{% endif %} px-3 py-2 rounded-1 fw-bold small">
+                    <i class="fas fa-user-plus me-1"></i> Publisher
+                </a>
+                <a href="{% url 'flora:add_plant_view' %}" class="btn {% if request.COOKIES.mode == 'dark' %}btn-light{% else %}btn-dark{% endif %} px-3 py-2 rounded-1 fw-bold small">
+                    <i class="fas fa-plus me-1"></i> Add Plant
+                </a>
+            </div>
         </div>
     </div>
 </nav>

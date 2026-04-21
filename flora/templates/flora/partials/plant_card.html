@@ -1,0 +1,34 @@
+<div class="col-lg-4 col-md-6">
+    <div class="card h-100 border-0 bg-transparent">
+        
+        <div class="position-relative mb-3" style="height: 220px; overflow: hidden; border-radius: 12px;">
+            {% if plant.image %}
+                <img src="{{ plant.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ plant.name }}">
+            {% else %}
+                <img src="/media/images/plant_default.jpg" class="w-100 h-100 object-fit-cover" alt="Default Image">
+            {% endif %}
+        </div>
+
+        <div class="card-body p-0">
+            <h5 class="fw-bold mb-1">{{ plant.name }}</h5>
+            
+            <p class="text-muted small mb-2">
+                {{ plant.about|truncatechars:80 }}
+            </p>
+            
+            <p class="fw-bold small mb-0">{{ plant.get_category_display }}</p>
+
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <div class="text-muted small">
+                    {% if plant.is_edible %}<i class="fas fa-utensils me-2"></i>{% endif %}
+                    {% if plant.is_helpful %}<i class="fas fa-medkit"></i>{% endif %}
+                </div>
+                
+                <a href="{% url 'flora:plant_detail_view' plant.id %}" class="btn btn-dark btn-sm rounded-pill px-3">
+                    More
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

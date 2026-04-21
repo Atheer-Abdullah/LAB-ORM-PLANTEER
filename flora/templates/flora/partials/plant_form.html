@@ -1,0 +1,71 @@
+{% csrf_token %}
+
+<div class="mb-4">
+    <input type="text" name="name" class="form-control" 
+           value="{{ plant.name|default:'' }}"
+           placeholder="Plant Name" required>
+</div>
+
+<div class="mb-4">
+    <textarea name="about" class="form-control" required>{{ plant.about|default:'' }}</textarea>
+</div>
+
+<div class="mb-4">
+    <select name="category" class="form-select">
+        {% for value, label in categories %}
+            <option value="{{ value }}" 
+            {% if plant.category == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="mb-4">
+    <input type="text" name="used_for" class="form-control" 
+           value="{{ plant.used_for|default:'' }}"
+           placeholder="Usage">
+</div>
+
+<div class="form-check">
+    <input type="checkbox" name="is_edible" 
+    {% if plant.is_edible %}checked{% endif %}>
+    Edible
+</div>
+
+<div class="form-check">
+    <input type="checkbox" name="is_helpful" 
+    {% if plant.is_helpful %}checked{% endif %}>
+    Helpful
+</div>
+
+<div class="mt-4">
+    <input type="file" name="image" class="form-control">
+</div>
+
+<div class="mb-4">
+    <label class="form-label fw-bold">Countries</label>
+    
+    <div class="d-flex flex-wrap gap-3">
+        {% for country in countries %}
+            <div class="form-check d-flex align-items-center gap-2">
+                
+                <input type="checkbox"
+                       name="countries"
+                       value="{{ country.id }}"
+                       class="form-check-input"
+                       {% if country in plant.countries.all %}checked{% endif %}>
+                
+                <label class="form-check-label d-flex align-items-center gap-2">
+                    
+                    {% if country.flag %}
+                        <img src="{{ country.flag.url }}" width="20" height="13" class="shadow-sm">
+                    {% endif %}
+                    
+                    {{ country.name }}
+                </label>
+
+            </div>
+        {% endfor %}
+    </div>
+</div>

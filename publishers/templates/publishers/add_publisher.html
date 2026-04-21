@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %} Add New Publisher - Planteer {% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="publisher-card shadow-sm p-5 bg-white rounded-4 border">
+                
+                <div class="text-center mb-5">
+                    <div class="icon-badge mb-3 d-inline-block p-3 rounded-circle bg-success bg-opacity-10">
+                        <i class="fas fa-building text-success fs-2"></i>
+                    </div>
+                    <h1 class="display-6 fw-bold">Add New <span class="text-success">Publisher</span></h1>
+                    <p class="text-muted">Register a new organization or botanical entity to the platform.</p>
+                </div>
+                
+                <form action="{% url 'publishers:add_publisher_view' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Organization Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-tag text-muted"></i></span>
+                            <input type="text" name="name" class="form-control border-0 bg-light p-3" placeholder="Enter publisher name..." required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Establishment Date</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i class="fas fa-calendar-alt text-muted"></i></span>
+                            <input type="date" name="established_at" class="form-control border-0 bg-light p-3" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">About the Publisher</label>
+                        <textarea name="description" class="form-control border-0 bg-light p-3" rows="4" placeholder="Tell us about this organization's mission..." required></textarea>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted text-uppercase">Website (Optional)</label>
+                            <input type="url" name="website" class="form-control border-0 bg-light p-3" placeholder="https://...">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-muted text-uppercase">Official Email</label>
+                            <input type="email" name="email" class="form-control border-0 bg-light p-3" placeholder="info@example.com">
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Publisher Logo</label>
+                        <div class="upload-container p-4 border border-dashed rounded-3 text-center bg-light">
+                            <i class="fas fa-cloud-upload-alt fs-2 text-muted mb-2"></i>
+                            <input type="file" name="logo" class="form-control form-control-sm border-0 bg-transparent shadow-none" required />
+                            <div class="form-text text-muted small">Upload a clean logo (PNG or JPG recommended)</div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success py-3 rounded-pill fw-bold shadow-sm transition-all">
+                            <i class="fas fa-plus-circle me-2"></i> Register Publisher
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="{% url 'publishers:publishers_list_view' %}" class="text-decoration-none text-muted small">
+                    <i class="fas fa-arrow-left me-1"></i> Back to all publishers
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

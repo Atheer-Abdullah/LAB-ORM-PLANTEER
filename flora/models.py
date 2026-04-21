@@ -1,5 +1,7 @@
 from django.db import models
+from publishers.models import Publisher 
 
+# Create your models here.
 
 class Country(models.Model):
     name = models.CharField(max_length=100)
@@ -29,6 +31,8 @@ class Plant(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
 
+    publisher = models.ForeignKey(Publisher, on_delete=models.PROTECT, null=True)
+    
     countries = models.ManyToManyField(Country, related_name="plants")
 
     def __str__(self):
@@ -43,7 +47,6 @@ class Plant(models.Model):
             return "Not for eating, but very useful for other purposes."
         else:
             return "This plant is neither edible nor particularly helpful."
-
 
 class Comment(models.Model):
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
