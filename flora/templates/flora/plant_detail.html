@@ -38,11 +38,33 @@
                 <p class="plant-text" style="line-height: 1.8; font-size: 1.1rem;">{{ plant.about }}</p>
             </div>
 
-            <div class="plant-specs p-4 rounded-4 border card-bg shadow-sm">
-                <p class="mb-2"><strong>Category:</strong> <span class="plant-text">{{ plant.get_category_display }}</span></p>
-                <p class="mb-2"><strong>Is Edible:</strong> <span class="plant-text">{% if plant.is_edible %} Yes {% else %} No {% endif %}</span></p>
-                <p class="mb-0"><strong>Used For:</strong></p>
-                <p class="plant-text">{{ plant.used_for }}</p>
+            <div class="plant-specs p-4 rounded-4 border card-bg shadow-sm bg-white">
+                <div class="row">
+                    <div class="col-md-6 border-end">
+                        <p class="mb-2 text-muted small text-uppercase fw-bold">Basic Info</p>
+                        <p class="mb-2"><strong>Category:</strong> <span class="plant-text">{{ plant.get_category_display }}</span></p>
+                        <p class="mb-2"><strong>Is Edible:</strong> <span class="plant-text">{% if plant.is_edible %} <i class="fas fa-check-circle text-success"></i> Yes {% else %} <i class="fas fa-times-circle text-danger"></i> No {% endif %}</span></p>
+                        <p class="mb-0"><strong>Used For:</strong></p>
+                        <p class="plant-text">{{ plant.used_for }}</p>
+                    </div>
+                    
+                    <div class="col-md-6 ps-md-4">
+                        <p class="mb-2 text-muted small text-uppercase fw-bold">Geographic Origin</p>
+                        <p class="mb-2"><strong>Native Countries:</strong></p>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for country in plant.countries.all %}
+                                <span class="badge bg-light text-dark border rounded-pill px-3 py-2 d-flex align-items-center shadow-sm">
+                                    {% if country.flag %}
+                                        <img src="{{ country.flag.url }}" width="20" height="13" class="me-2 shadow-sm" alt="flag">
+                                    {% endif %}
+                                    {{ country.name }}
+                                </span>
+                            {% empty %}
+                                <span class="text-muted small">No countries recorded.</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -31,9 +31,9 @@
                             <label class="form-label fw-bold small text-uppercase text-muted">Category</label>
                             <select name="category" class="form-select border-0 shadow-sm">
                                 {% for choice in categories %}
-                            <option value="{{ choice.0 }}" {% if plant.category == choice.0 %}selected{% endif %}>
-                                {{ choice.1 }}
-                            </option>
+                                    <option value="{{ choice.0 }}" {% if plant.category == choice.0 %}selected{% endif %}>
+                                        {{ choice.1 }}
+                                    </option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -57,24 +57,49 @@
                         </div>
                     </div>
 
-                    <div class="mb-5 text-center">
-    <p class="small fw-bold text-muted text-uppercase mb-2">Current Photo</p>
-    <div class="mb-3">
-        {% if plant.image %}
-            <img src="{{ plant.image.url }}" class="rounded shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
-        {% else %}
-            <img src="/media/images/plant_default.jpg" class="rounded shadow-sm" style="width: 100px; height: 100px; object-fit: cover;">
-        {% endif %}
-    </div>
-    <input type="file" name="image" class="form-control form-control-sm">
-</div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted text-uppercase">Native Countries</label>
+                        <div class="countries-container d-flex flex-wrap gap-3 p-3 border rounded-3 bg-light" style="max-height: 180px; overflow-y: auto;">
+                            {% for country in countries %}
+                                <div class="form-check form-check-inline m-0">
+                                    <input type="checkbox" 
+                                           name="countries" 
+                                           id="country_{{ country.id }}" 
+                                           value="{{ country.id }}" 
+                                           class="form-check-input"
+                                           {% if country in plant.countries.all %} checked {% endif %}>
+                                    <label for="country_{{ country.id }}" class="form-check-label small d-flex align-items-center">
+                                        {% if country.flag %}
+                                            <img src="{{ country.flag.url }}" width="20" height="13" class="me-2 shadow-sm" alt="flag">
+                                        {% endif %}
+                                        {{ country.name }}
+                                    </label>
+                                </div>
+                            {% empty %}
+                                <p class="text-muted small mb-0">No countries listed in database.</p>
+                            {% endfor %}
+                        </div>
+                        <div class="form-text text-muted small mt-1">Update the geographical origins of this plant.</div>
+                    </div>
+
+                    <div class="mb-5 text-center p-3 rounded-3 border bg-light">
+                        <p class="small fw-bold text-muted text-uppercase mb-2">Plant Photo</p>
+                        <div class="mb-3">
+                            {% if plant.image %}
+                                <img src="{{ plant.image.url }}" class="rounded shadow-sm border border-white border-3" style="width: 120px; height: 120px; object-fit: cover;">
+                            {% else %}
+                                <img src="/media/images/plant_default.jpg" class="rounded shadow-sm" style="width: 120px; height: 120px; object-fit: cover;">
+                            {% endif %}
+                        </div>
+                        <input type="file" name="image" class="form-control form-control-sm mx-auto" style="max-width: 300px;">
+                    </div>
 
                     <div class="d-flex justify-content-between align-items-center border-top pt-4">
                         <button type="button" class="btn btn-outline-danger rounded-pill px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#deleteModal">
                             <i class="fas fa-trash-alt me-2"></i>Delete
                         </button>
 
-                        <button type="submit" class="btn btn-success shadow-lg px-5 rounded-pill fw-bold" style="background: #198754;">
+                        <button type="submit" class="btn btn-success shadow-lg px-5 rounded-pill fw-bold" style="background: #198754; padding: 12px 40px;">
                             Save Changes
                         </button>
                     </div>

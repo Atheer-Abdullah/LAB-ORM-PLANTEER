@@ -1,24 +1,31 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
-from .models import Plant, Comment
+from .models import Plant, Comment, Country 
 
 # Create your views here.
 
 def all_plants_view(request: HttpRequest):
     category = request.GET.get("category")
+    countries = Country.objects.all()
     
     if category:
         plants = Plant.objects.filter(category=category)
     else:
         plants = Plant.objects.all()
 
+    if "country" in request.GET and request.GET["country"] != "all":
+        plants = plants.filter(countries__id=request.GET["country"])
+
     return render(request, "flora/all_plants.html", {
         "plants": plants,
         "categories": Plant.CategoryChoices.choices,
-        "selected_category": category
+        "selected_category": category,
+        "countries": countries
     })
 
 def add_plant_view(request: HttpRequest):
+    countries = Country.objects.all()
+    
     if request.method == "POST":
         new_plant = Plant(
             name=request.POST.get("name"),
@@ -31,10 +38,14 @@ def add_plant_view(request: HttpRequest):
         if request.FILES.get("image"):
             new_plant.image = request.FILES.get("image")
         new_plant.save()
+
+        new_plant.countries.set(request.POST.getlist("countries"))
+        
         return redirect("flora:all_plants_view")
 
     return render(request, "flora/add_plant.html", {
-        "categories": Plant.CategoryChoices.choices
+        "categories": Plant.CategoryChoices.choices,
+        "countries": countries 
     })
 
 def plant_detail_view(request: HttpRequest, plant_id: int):
@@ -65,6 +76,7 @@ def add_comment_view(request: HttpRequest, plant_id: int):
 
 def update_plant_view(request: HttpRequest, plant_id: int):
     plant = Plant.objects.get(pk=plant_id)
+    countries = Country.objects.all() 
     
     if request.method == "POST":
         plant.name = request.POST["name"]
@@ -78,11 +90,15 @@ def update_plant_view(request: HttpRequest, plant_id: int):
             plant.image = request.FILES["image"]
             
         plant.save()
+
+        plant.countries.set(request.POST.getlist("countries"))
+        
         return redirect("flora:plant_detail_view", plant_id=plant.id)
 
     return render(request, "flora/update_plant.html", {
         "plant": plant,
-        "categories": Plant.CategoryChoices.choices
+        "categories": Plant.CategoryChoices.choices,
+        "countries": countries
     })
 
 def delete_plant_view(request: HttpRequest, plant_id: int):

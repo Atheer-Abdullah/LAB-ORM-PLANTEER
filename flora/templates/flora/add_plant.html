@@ -4,8 +4,10 @@
 {% block title %} New Plant Entry - Planteer {% endblock %}
 
 {% block content %}
-<div class="container py-4"> <div class="row justify-content-center">
-        <div class="col-12 col-lg-8"> <div class="editor-container shadow-sm p-4 p-md-5 bg-body rounded border">
+<div class="container py-4"> 
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8"> 
+            <div class="editor-container shadow-sm p-4 p-md-5 bg-body rounded border">
                 
                 <div class="editor-header mb-4 mb-md-5 text-center">
                     <h1 class="display-5 fw-bold text-body-emphasis">New <span style="color: #198754;">Plant.</span></h1>
@@ -56,6 +58,30 @@
                         </div>
                     </div>
 
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-uppercase text-secondary mb-2">Native Countries</label>
+                        <div class="countries-container d-flex flex-wrap gap-3 p-3 border rounded-3 bg-white shadow-sm" style="max-height: 200px; overflow-y: auto;">
+                            {% for country in countries %}
+                                <div class="form-check form-check-inline m-0">
+                                    <input type="checkbox" 
+                                           name="countries" 
+                                           id="country_{{ country.id }}" 
+                                           value="{{ country.id }}" 
+                                           class="form-check-input">
+                                    <label for="country_{{ country.id }}" class="form-check-label small d-flex align-items-center">
+                                        {% if country.flag %}
+                                            <img src="{{ country.flag.url }}" width="20" height="13" class="me-2 shadow-sm" alt="flag">
+                                        {% endif %}
+                                        {{ country.name }}
+                                    </label>
+                                </div>
+                            {% empty %}
+                                <p class="text-muted small mb-0">No countries available in database.</p>
+                            {% endfor %}
+                        </div>
+                        <div class="form-text text-muted small mt-1">Select all countries where this plant originates.</div>
+                    </div>
+
                     <div class="form-footer d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mt-4">
                         <div class="w-100 w-sm-auto text-center">
                             <label for="id_image" class="btn-action shadow-sm w-100" style="cursor: pointer; padding: 10px 20px; border-radius: 30px; border: 1px solid #ddd; background: var(--bs-body-bg); color: var(--bs-body-color); display: inline-block;">
@@ -75,6 +101,7 @@
 </div>
 
 <script>
+    // Script to show file name on label after selection
     document.getElementById('id_image').addEventListener('change', function() {
         if (this.files && this.files.length > 0) {
             const label = document.querySelector(`label[for="${this.id}"]`);
