@@ -42,3 +42,18 @@ h1 {
     transform: translateY(-2px);
     transition: all 0.2s ease;
 }
+
+[data-bs-theme="dark"] .btn-outline-warning {
+    color: #ffc107 !important;
+    border-color: #ffc107 !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-secondary {
+    color: #adb5bd !important;
+    border-color: #adb5bd !important;
+}
+
+[data-bs-theme="dark"] .btn-warning {
+    color: #000 !important;
+    background-color: #ffc107 !important;
+}

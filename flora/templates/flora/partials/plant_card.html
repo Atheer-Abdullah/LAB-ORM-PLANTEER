@@ -1,7 +1,8 @@
-<div class="col-lg-4 col-md-6">
-    <div class="card h-100 border-0 bg-transparent">
+<div class="col-lg-4 col-md-6 mb-4">
+    <div class="card h-100 border-0 shadow-sm transition-hover bg-success bg-opacity-10 text-dark" 
+         style="border-radius: 28px; padding: 15px;">
         
-        <div class="position-relative mb-3" style="height: 220px; overflow: hidden; border-radius: 12px;">
+        <div class="position-relative" style="height: 230px; border-radius: 22px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
             {% if plant.image %}
                 <img src="{{ plant.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ plant.name }}">
             {% else %}
@@ -9,26 +10,64 @@
             {% endif %}
         </div>
 
-        <div class="card-body p-0">
-            <h5 class="fw-bold mb-1">{{ plant.name }}</h5>
+        <div class="card-body d-flex flex-column px-1 pt-4 pb-0">
             
-            <p class="text-muted small mb-2">
-                {{ plant.about|truncatechars:80 }}
+            <div class="d-flex gap-2 flex-wrap mb-3">
+                <a href="{% url 'flora:all_plants_view' %}?category={{ plant.category }}" 
+                   class="badge rounded-pill bg-success text-white text-decoration-none px-3 py-2 border-0 shadow-sm hover-lift">
+                    <i class="fas fa-leaf me-1 small"></i> {{ plant.get_category_display }}
+                </a>
+                
+                {% if plant.is_edible %}
+                <a href="{% url 'flora:all_plants_view' %}?is_edible=True" 
+                   class="badge rounded-pill bg-warning text-dark text-decoration-none px-3 py-2 border-0 shadow-sm hover-lift">
+                    <i class="fas fa-utensils me-1 small"></i> Edible
+                </a>
+                {% endif %}
+
+                {% if plant.is_helpful %}
+                <a href="{% url 'flora:all_plants_view' %}?is_helpful=True" 
+                   class="badge rounded-pill bg-info text-dark text-decoration-none px-3 py-2 border-0 shadow-sm hover-lift">
+                    <i class="fas fa-hand-holding-heart me-1 small"></i> Helpful
+                </a>
+                {% endif %}
+            </div>
+
+            <h3 class="fw-bold h4 mb-2 text-success">
+                {{ plant.name }}
+            </h3>
+            
+            <p class="small mb-4 flex-grow-1 text-muted" style="line-height: 1.6;">
+                {{ plant.about|truncatechars:95 }}
             </p>
             
-            <p class="fw-bold small mb-0">{{ plant.get_category_display }}</p>
-
-            <div class="d-flex justify-content-between align-items-center mt-2">
-                <div class="text-muted small">
-                    {% if plant.is_edible %}<i class="fas fa-utensils me-2"></i>{% endif %}
-                    {% if plant.is_helpful %}<i class="fas fa-medkit"></i>{% endif %}
-                </div>
+            <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top border-dark border-opacity-10">
                 
-                <a href="{% url 'flora:plant_detail_view' plant.id %}" class="btn btn-dark btn-sm rounded-pill px-3">
-                    More
+                <div class="d-flex gap-1 flex-wrap">
+                    {% for country in plant.countries.all %}
+                    <a href="{% url 'flora:all_plants_view' %}?country={{ country.id }}" 
+                       class="d-flex align-items-center text-decoration-none px-2 py-1 rounded-pill border border-success border-opacity-20 hover-scale shadow-xs bg-white bg-opacity-70 transition-all">
+                        
+                        {% if country.flag %}
+                            <img src="{{ country.flag.url }}" alt="{{ country.name }}" class="me-1 rounded-1" style="width: 18px; height: 12px; object-fit: cover;">
+                        {% else %}
+                            <i class="fas fa-flag me-1 text-muted" style="font-size: 0.6rem;"></i>
+                        {% endif %}
+                        
+                        <span class="fw-bold text-success" style="font-size: 0.65rem; letter-spacing: 0.3px;">
+                            {{ country.name }}
+                        </span>
+                    </a>
+                    {% empty %}
+                    <span class="text-muted" style="font-size: 0.6rem;">Global</span>
+                    {% endfor %}
+                </div>
+
+                <a href="{% url 'flora:plant_detail_view' plant.id %}" 
+                   class="btn btn-success btn-sm rounded-pill px-3 py-1 fw-bold shadow-sm transition-all hover-lift" style="font-size: 0.75rem;">
+                    View <i class="fas fa-arrow-right ms-1 small"></i>
                 </a>
             </div>
         </div>
-
     </div>
 </div>

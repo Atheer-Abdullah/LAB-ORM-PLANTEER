@@ -88,16 +88,57 @@
     <hr class="my-5 opacity-10">
 
     <section class="related-plants mb-5">
-    <h3 class="fw-bold mb-4">Related Plants</h3>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for plant in related_plants %}
-            {% include "flora/partials/plant_card.html" %}
-        {% empty %}
+        <h3 class="fw-bold mb-4">Related Plants</h3>
+        <div class="row g-5">
+            {% for plant in related_plants %}
+                {% include "flora/partials/plant_card.html" %}
+            {% empty %}
             <div class="col-12 text-center py-4">
                 <p class="text-muted">No related plants found in this category.</p>
             </div>
-        {% endfor %}
-    </div>
-</section>
+            {% endfor %}
+        </div>
+    </section>
+
+    <hr class="my-5 opacity-10">
+    <section class="comments-section">
+        <h3 class="fw-bold mb-4">Comments ({{ comments.count }})</h3>
+        <div class="d-flex flex-column gap-3 mb-5">
+            {% for comment in comments %}
+                <div class="d-flex flex-column p-4 shadow-sm border rounded-4 bg-white">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="fw-bold mb-0 text-success">{{ comment.name }}</h5>
+                        <small class="text-muted"><i class="far fa-clock me-1"></i>{{ comment.created_at|date:"M d, Y" }}</small>
+                    </div>
+                    <p class="mb-0 text-muted">{{ comment.content }}</p>
+                </div>
+            {% empty %}
+                <div class="text-center py-4 rounded-4 border border-dashed bg-light">
+                    <p class="text-muted mb-0">No comments yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="add-comment-wrapper p-4 rounded-4 border bg-light shadow-sm">
+            <h4 class="fw-bold mb-3">Leave a Comment</h4>
+            <form class="d-flex flex-column gap-3" action="{% url 'flora:add_comment_view' plant.id %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label fw-bold small opacity-75">Full Name</label>
+                    <input class="form-control border-0 shadow-sm" name="name" required minlength="3" placeholder="Enter your name..."/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label fw-bold small opacity-75">Your Comment</label>
+                    <textarea class="form-control border-0 shadow-sm" name="content" rows="4" required minlength="3" placeholder="What do you think?"></textarea>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success rounded-pill px-5 py-2 fw-bold shadow-sm">
+                        Post Comment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
 </div>
+
 {% endblock %}

@@ -22,12 +22,12 @@
                         {% endif %}
                     </button>
                     <ul class="dropdown-menu shadow border-0 mt-2 rounded-3">
-                        <li><a class="dropdown-item" href="?{% if selected_category %}category={{ selected_category }}{% endif %}">All Countries</a></li>
+                        <li><a class="dropdown-item" href="?{% if selected_category %}category={{ selected_category }}{% endif %}{% if is_edible %}&is_edible=True{% endif %}{% if is_helpful %}&is_helpful=True{% endif %}">All Countries</a></li>
                         <li><hr class="dropdown-divider"></li>
                         {% for country in countries %}
                         <li>
                             <a class="dropdown-item d-flex align-items-center" 
-                               href="?country={{ country.id }}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                               href="?country={{ country.id }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if is_edible %}&is_edible=True{% endif %}{% if is_helpful %}&is_helpful=True{% endif %}">
                                 {% if country.flag %}
                                     <img src="{{ country.flag.url }}" class="me-2 rounded-1" style="width:20px; height:13px; object-fit:cover;">
                                 {% endif %}
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="dropdown">
-                    <button class="btn {% if selected_category %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill px-4 dropdown-toggle shadow-sm" 
+                    <button class="btn {% if selected_category %}btn-secondary{% else %}btn-outline-secondary{% endif %} rounded-pill px-4 dropdown-toggle shadow-sm" 
                             type="button" data-bs-toggle="dropdown">
                         <i class="fas fa-filter me-2"></i>
                         {% if selected_category %}
@@ -49,16 +49,44 @@
                         {% endif %}
                     </button>
                     <ul class="dropdown-menu shadow border-0 mt-2 rounded-3">
-                        <li><a class="dropdown-item" href="?{% if selected_country %}country={{ selected_country }}{% endif %}">All Categories</a></li>
+                        <li><a class="dropdown-item" href="?{% if selected_country %}country={{ selected_country }}{% endif %}{% if is_edible %}&is_edible=True{% endif %}{% if is_helpful %}&is_helpful=True{% endif %}">All Categories</a></li>
                         <li><hr class="dropdown-divider"></li>
                         {% for value, label in categories %}
                         <li>
                             <a class="dropdown-item" 
-                               href="?category={{ value }}{% if selected_country %}&country={{ selected_country }}{% endif %}">
+                               href="?category={{ value }}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if is_edible %}&is_edible=True{% endif %}{% if is_helpful %}&is_helpful=True{% endif %}">
                                 {{ label }}
                             </a>
                         </li>
                         {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <button class="btn {% if is_edible or is_helpful %}btn-warning text-dark{% else %}btn-outline-warning text-warning-emphasis{% endif %} rounded-pill px-4 dropdown-toggle shadow-sm" 
+                            type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-star me-2"></i>
+                        <span class="fw-bold">
+                            {% if is_edible and is_helpful %} Edible & Helpful
+                            {% elif is_edible %} Edible
+                            {% elif is_helpful %} Helpful
+                            {% else %} Properties
+                            {% endif %}
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu shadow border-0 mt-2 rounded-3">
+                        <li><a class="dropdown-item" href="?{% if selected_country %}country={{ selected_country }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">Clear Properties</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="?is_edible=True{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                                <i class="fas fa-utensils me-2 text-warning"></i> Edible
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="?is_helpful=True{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
+                                <i class="fas fa-hand-holding-heart me-2 text-info"></i> Helpful
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
@@ -67,7 +95,7 @@
 
         <div class="col-12 col-lg-4">
             <form action="{% url 'flora:search_plants_view' %}" method="GET" class="d-flex shadow-sm rounded-pill overflow-hidden border">
-                <input type="text" name="search" class="form-control border-0 ps-3" placeholder="Quick search..." style="border-radius: 0;">
+                <input type="text" name="search" class="form-control border-0 ps-3 bg-transparent" placeholder="Quick search..." style="border-radius: 0;">
                 <button class="btn btn-dark px-3" type="submit" style="border-radius: 0;">
                     <i class="fas fa-search"></i>
                 </button>

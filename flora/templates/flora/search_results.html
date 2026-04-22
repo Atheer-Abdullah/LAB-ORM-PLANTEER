@@ -29,37 +29,7 @@
 
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% for plant in plants %}
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm p-3 bg-white" style="border-radius: 20px;">
-                        <div class="position-relative">
-                            {% if plant.image %}
-                                <img src="{{ plant.image.url }}" class="card-img-top rounded-4 object-fit-cover" style="height: 250px;" alt="{{ plant.name }}">
-                            {% else %}
-                                <img src="/media/images/plant_default.jpg" class="card-img-top rounded-4 object-fit-cover" style="height: 250px;" alt="Default">
-                            {% endif %}
-                            
-                            <span class="position-absolute top-0 end-0 m-3 badge rounded-pill bg-white text-dark shadow-sm py-2 px-3 fw-bold">
-                                {{ plant.category }}
-                            </span>
-                        </div>
-
-                        <div class="card-body px-1 pt-4">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <a href="{% url 'flora:plant_detail_view' plant.id %}" class="text-decoration-none">
-                                    <h4 class="fw-bold text-dark mb-0">{{ plant.name }}</h4>
-                                </a>
-                                {% if plant.is_edible %}
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Edible</span>
-                                {% endif %}
-                            </div>
-                            <p class="text-muted small">{{ plant.about|truncatechars:80 }}</p>
-                            <div class="border-top pt-3 mt-2 d-flex justify-content-between align-items-center">
-                                <span class="text-muted small"><i class="far fa-calendar-alt me-1"></i> {{ plant.created_at|date:"M d, Y" }}</span>
-                                <a href="{% url 'flora:plant_detail_view' plant.id %}" class="btn btn-sm btn-outline-dark rounded-pill px-3">View Detail</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% include "flora/partials/plant_card.html" %}
             {% endfor %}
         </div>
 
