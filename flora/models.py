@@ -19,7 +19,7 @@ class Plant(models.Model):
     name = models.CharField(max_length=200)
     about = models.TextField()
     used_for = models.TextField()
-    image = models.ImageField(upload_to="images/", default="images/plant_default.jpg")
+    image = models.ImageField(upload_to="plants/%Y/%m/%d/", default="images/plant_default.jpg")
     category = models.CharField(
         max_length=20, 
         choices=CategoryChoices.choices, 
@@ -28,11 +28,8 @@ class Plant(models.Model):
     
     is_edible = models.BooleanField(default=False) 
     is_helpful = models.BooleanField(default=True) 
-    
     created_at = models.DateTimeField(auto_now_add=True)
-
-    publisher = models.ForeignKey(Publisher, on_delete=models.PROTECT, null=True)
-    
+    publisher = models.ForeignKey(Publisher, on_delete=models.SET_NULL, null=True, blank=True)
     countries = models.ManyToManyField(Country, related_name="plants")
 
     def __str__(self):

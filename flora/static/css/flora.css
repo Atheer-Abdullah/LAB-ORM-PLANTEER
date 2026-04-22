@@ -1,5 +1,6 @@
 .detail-img-container {
-    height: 450px;
+    min-height: 550px; 
+    height: 100%;      
     border-radius: 20px;
     overflow: hidden;
 }
@@ -124,7 +125,7 @@ h1 {
     top: 85px !important;
     height: calc(100vh - 85px) !important;
     z-index: 1045 !important;
-    border-top: 1px solid var(--card-border) !important; /* خط فاصل بسيط */
+    border-top: 1px solid var(--card-border) !important; 
     box-shadow: 10px 0 30px rgba(0,0,0,0.05) !important;
 }
 

@@ -7,4 +7,6 @@ urlpatterns = [
     path("add/", views.add_publisher_view, name="add_publisher_view"),
     path("all/", views.publishers_list_view, name="publishers_list_view"),
     path("detail/<publisher_id>/", views.publisher_detail_view, name="publisher_detail_view"),
+    path("update/<int:publisher_id>/", views.update_publisher_view, name="update_publisher_view"),
+    path("delete/<int:publisher_id>/", views.delete_publisher_view, name="delete_publisher_view"),
 ]

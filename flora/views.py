@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from .models import Plant, Comment, Country
 from publishers.models import Publisher
 
@@ -11,7 +11,7 @@ def all_plants_view(request: HttpRequest, country_id=None):
     is_edible = request.GET.get("is_edible")
     is_helpful = request.GET.get("is_helpful")
 
-    plants = Plant.objects.all()
+    plants = Plant.objects.all().select_related('publisher')
     countries = Country.objects.all()
     publishers = Publisher.objects.all()
 
