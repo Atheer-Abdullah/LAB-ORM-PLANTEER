@@ -4,106 +4,46 @@
 {% block title %} All Plants - Planteer {% endblock %}
 
 {% block content %}
+<style>
+.offcanvas {
+top: 85px !important;
+height: calc(100vh - 85px) !important;
+}
+.offcanvas-backdrop {
+top: 85px !important; 
+}
+    
+    
+.form-select option {
+    color: #000 !important;
+    background-color: #fff !important;
+}
+</style>
 <div class="container mt-5"> 
     <div class="row mb-4 gy-3 align-items-center">
         <div class="col-12 col-lg-8">
             <div class="d-flex gap-3 flex-wrap align-items-center">
+                <button class="btn btn-success rounded-pill px-4 shadow-sm fw-bold" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarFilters">
+                    <i class="fas fa-sliders-h me-2"></i> Filters & Publishers
+                </button>
                 
-                <div class="dropdown">
-                    <button class="btn {% if selected_country %}btn-success{% else %}btn-outline-success{% endif %} rounded-pill px-4 dropdown-toggle d-flex align-items-center shadow-sm" 
-                            type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-globe-asia me-2"></i>
-                        {% if selected_country and selected_country != 'all' %}
-                            {% for country in countries %}
-                                {% if country.id|stringformat:'i' == selected_country %}{{ country.name }}{% endif %}
-                            {% endfor %}
-                        {% else %}
-                            Countries
-                        {% endif %}
-                    </button>
-                    <ul class="dropdown-menu shadow border-0 mt-2 rounded-3">
-                        <li><a class="dropdown-item" href="?{% if selected_category %}category={{ selected_category }}{% endif %}{% if is_edible %}&is_edible=True{% endif %}{% if is_helpful %}&is_helpful=True{% endif %}">All Countries</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        {% for country in countries %}
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" 
-                               href="?country={{ country.id }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if is_edible %}&is_edible=True{% endif %}{% if is_helpful %}&is_helpful=True{% endif %}">
-                                {% if country.flag %}
-                                    <img src="{{ country.flag.url }}" class="me-2 rounded-1" style="width:20px; height:13px; object-fit:cover;">
-                                {% endif %}
-                                {{ country.name }}
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div class="dropdown">
-                    <button class="btn {% if selected_category %}btn-secondary{% else %}btn-outline-secondary{% endif %} rounded-pill px-4 dropdown-toggle shadow-sm" 
-                            type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-filter me-2"></i>
-                        {% if selected_category %}
-                            {{ selected_category|title }}
-                        {% else %}
-                            Categories
-                        {% endif %}
-                    </button>
-                    <ul class="dropdown-menu shadow border-0 mt-2 rounded-3">
-                        <li><a class="dropdown-item" href="?{% if selected_country %}country={{ selected_country }}{% endif %}{% if is_edible %}&is_edible=True{% endif %}{% if is_helpful %}&is_helpful=True{% endif %}">All Categories</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        {% for value, label in categories %}
-                        <li>
-                            <a class="dropdown-item" 
-                               href="?category={{ value }}{% if selected_country %}&country={{ selected_country }}{% endif %}{% if is_edible %}&is_edible=True{% endif %}{% if is_helpful %}&is_helpful=True{% endif %}">
-                                {{ label }}
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div class="dropdown">
-                    <button class="btn {% if is_edible or is_helpful %}btn-warning text-dark{% else %}btn-outline-warning text-warning-emphasis{% endif %} rounded-pill px-4 dropdown-toggle shadow-sm" 
-                            type="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-star me-2"></i>
-                        <span class="fw-bold">
-                            {% if is_edible and is_helpful %} Edible & Helpful
-                            {% elif is_edible %} Edible
-                            {% elif is_helpful %} Helpful
-                            {% else %} Properties
-                            {% endif %}
-                        </span>
-                    </button>
-                    <ul class="dropdown-menu shadow border-0 mt-2 rounded-3">
-                        <li><a class="dropdown-item" href="?{% if selected_country %}country={{ selected_country }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">Clear Properties</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="?is_edible=True{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
-                                <i class="fas fa-utensils me-2 text-warning"></i> Edible
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-center" href="?is_helpful=True{% if selected_country %}&country={{ selected_country }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}">
-                                <i class="fas fa-hand-holding-heart me-2 text-info"></i> Helpful
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
+                {% if request.GET.publisher or selected_category or selected_country %}
+                    <a href="." class="btn btn-link btn-sm text-danger text-decoration-none fw-bold">Clear All</a>
+                {% endif %}
             </div>
         </div>
 
         <div class="col-12 col-lg-4">
-            <form action="{% url 'flora:search_plants_view' %}" method="GET" class="d-flex shadow-sm rounded-pill overflow-hidden border">
-                <input type="text" name="search" class="form-control border-0 ps-3 bg-transparent" placeholder="Quick search..." style="border-radius: 0;">
-                <button class="btn btn-dark px-3" type="submit" style="border-radius: 0;">
+            <form action="{% url 'flora:search_plants_view' %}" method="GET" class="d-flex shadow-sm rounded-pill overflow-hidden border border-secondary-subtle bg-body">
+                <input type="text" name="search" class="form-control border-0 ps-3 bg-transparent text-body" placeholder="Quick search..." value="{{ request.GET.search }}">
+                <button class="btn btn-dark px-3" type="submit">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
         </div>
     </div>
 
-    <hr class="mb-5">
+    <hr class="mb-5 opacity-25">
 
     <div class="row g-5"> 
         {% for plant in plants %}
@@ -114,6 +54,67 @@
                 <a href="{% url 'flora:add_plant_view' %}" class="btn btn-dark rounded-pill px-4">Add Plant</a>
             </div>
         {% endfor %}
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-start bg-body border-end border-secondary-subtle shadow" tabindex="-1" id="sidebarFilters">
+    <div class="offcanvas-header border-bottom border-secondary-subtle">
+        <h5 class="offcanvas-title fw-bold text-success">Plant Filters</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body p-4">
+        <form action="." method="GET">
+            
+<div class="mb-4">
+    <label class="form-label small fw-bold text-secondary text-uppercase mb-2">Publishers</label>
+<select name="publisher" class="form-select border-secondary-subtle bg-body-tertiary p-2 rounded-3 text-dark" onchange="this.form.submit()">
+    <option value="" class="text-dark">All Publishers</option>
+    {% for pub in publishers %}
+        <option value="{{ pub.id }}" 
+                class="text-dark" 
+                {% if request.GET.publisher == pub.id|slugify %}selected{% endif %}>
+            {{ pub.name }}
+        </option>
+    {% endfor %}
+</select>
+</div>
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-secondary text-uppercase mb-2">Origin Country</label>
+                <select name="country" class="form-select border-secondary-subtle bg-body-tertiary p-2 rounded-3 text-body" onchange="this.form.submit()">
+                    <option value="">All Countries</option>
+                    {% for country in countries %}
+                        <option value="{{ country.id }}" {% if selected_country == country.id|stringformat:"i" %}selected{% endif %}>{{ country.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label small fw-bold text-secondary text-uppercase mb-2">Category</label>
+                <div class="list-group list-group-flush rounded-3 border border-secondary-subtle overflow-hidden shadow-sm">
+                    <a href="?{% if selected_country %}country={{ selected_country }}{% endif %}" class="list-group-item list-group-item-action bg-body-tertiary {% if not selected_category %}active bg-success border-success text-body-emphasis{% endif %}">All</a>
+                    {% for value, label in categories %}
+                        <a href="?category={{ value }}{% if selected_country %}&country={{ selected_country }}{% endif %}" class="list-group-item list-group-item-action bg-body-tertiary {% if selected_category == value %}active bg-success border-success text-white{% endif %}">
+                            {{ label }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="mb-4 p-3 bg-body-tertiary rounded-3 border border-secondary-subtle">
+                <label class="form-label small fw-bold text-secondary text-uppercase mb-2 d-block">Properties</label>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" name="is_edible" value="True" id="sideEdible" onchange="this.form.submit()" {% if is_edible %}checked{% endif %}>
+                    <label class="form-check-label text-body" for="sideEdible">Edible <i class="fas fa-utensils ms-1 text-warning small"></i></label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="is_helpful" value="True" id="sideHelpful" onchange="this.form.submit()" {% if is_helpful %}checked{% endif %}>
+                    <label class="form-check-label text-body" for="sideHelpful">Helpful <i class="fas fa-hand-holding-heart ms-1 text-info small"></i></label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 rounded-pill mb-2">Apply Filters</button>
+            <a href="." class="btn btn-outline-secondary w-100 rounded-pill">Reset</a>
+        </form>
     </div>
 </div>
 {% endblock %}

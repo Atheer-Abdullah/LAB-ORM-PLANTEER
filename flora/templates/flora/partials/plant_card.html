@@ -1,48 +1,46 @@
 <div class="col-lg-4 col-md-6 mb-4">
-    <div class="card h-100 border-0 shadow-sm transition-hover bg-success bg-opacity-10 text-dark" 
-         style="border-radius: 28px; padding: 15px;">
-        
-        <div class="position-relative" style="height: 230px; border-radius: 22px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <div class="card h-100 border-0 shadow-sm plant-card-custom">
+        <div class="ratio ratio-16x9 rounded-4 overflow-hidden position-relative card-img-wrapper">
             {% if plant.image %}
-                <img src="{{ plant.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ plant.name }}">
+                <img src="{{ plant.image.url }}" class="object-fit-cover" alt="{{ plant.name }}">
             {% else %}
-                <img src="/media/images/plant_default.jpg" class="w-100 h-100 object-fit-cover" alt="Default Image">
+                <img src="/media/images/plant_default.jpg" class="object-fit-cover" alt="Default Image">
             {% endif %}
+            
+            <div class="position-absolute bottom-0 start-0 m-3">
+                <a href="{% url 'flora:all_plants_view' %}?category={{ plant.category }}" class="text-decoration-none">
+                    <span class="badge rounded-pill glass-badge">
+                        <i class="fas fa-leaf me-1"></i> {{ plant.get_category_display }}
+                    </span>
+                </a>
+            </div>
         </div>
 
-        <div class="card-body d-flex flex-column px-1 pt-4 pb-0">
-            
-            <div class="d-flex gap-2 flex-wrap mb-3">
-                <a href="{% url 'flora:all_plants_view' %}?category={{ plant.category }}" 
-                   class="badge rounded-pill bg-success text-white text-decoration-none px-3 py-2 border-0 shadow-sm hover-lift">
-                    <i class="fas fa-leaf me-1 small"></i> {{ plant.get_category_display }}
-                </a>
-                
+        <div class="card-body d-flex flex-column p-4">
+            <div class="d-flex gap-2 mb-3">
                 {% if plant.is_edible %}
-                <a href="{% url 'flora:all_plants_view' %}?is_edible=True" 
-                   class="badge rounded-pill bg-warning text-dark text-decoration-none px-3 py-2 border-0 shadow-sm hover-lift">
-                    <i class="fas fa-utensils me-1 small"></i> Edible
-                </a>
+                    <a href="{% url 'flora:all_plants_view' %}?is_edible=True" class="text-decoration-none transition-all hover-scale">
+                        <span class="badge rounded-pill bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1">
+                            <i class="fas fa-utensils small"></i> Edible
+                        </span>
+                    </a>
                 {% endif %}
 
                 {% if plant.is_helpful %}
-                <a href="{% url 'flora:all_plants_view' %}?is_helpful=True" 
-                   class="badge rounded-pill bg-info text-dark text-decoration-none px-3 py-2 border-0 shadow-sm hover-lift">
-                    <i class="fas fa-hand-holding-heart me-1 small"></i> Helpful
-                </a>
+                    <a href="{% url 'flora:all_plants_view' %}?is_helpful=True" class="text-decoration-none transition-all hover-scale">
+                        <span class="badge rounded-pill bg-info-subtle text-info-emphasis border border-info-subtle px-2 py-1">
+                            <i class="fas fa-hand-holding-heart small"></i> Helpful
+                        </span>
+                    </a>
                 {% endif %}
             </div>
 
-            <h3 class="fw-bold h4 mb-2 text-success">
-                {{ plant.name }}
-            </h3>
-            
-            <p class="small mb-4 flex-grow-1 text-muted" style="line-height: 1.6;">
-                {{ plant.about|truncatechars:95 }}
+            <h3 class="h5 fw-bold mb-2 plant-title-text">{{ plant.name }}</h3>
+            <p class="card-text small text-secondary mb-4 flex-grow-1">
+                {{ plant.about|truncatechars:90 }}
             </p>
             
-            <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top border-dark border-opacity-10">
-                
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
                 <div class="d-flex gap-1 flex-wrap">
                     {% for country in plant.countries.all %}
                     <a href="{% url 'flora:all_plants_view' %}?country={{ country.id }}" 
@@ -59,13 +57,12 @@
                         </span>
                     </a>
                     {% empty %}
-                    <span class="text-muted" style="font-size: 0.6rem;">Global</span>
+                        <span class="text-muted" style="font-size: 0.6rem;">Global</span>
                     {% endfor %}
                 </div>
 
-                <a href="{% url 'flora:plant_detail_view' plant.id %}" 
-                   class="btn btn-success btn-sm rounded-pill px-3 py-1 fw-bold shadow-sm transition-all hover-lift" style="font-size: 0.75rem;">
-                    View <i class="fas fa-arrow-right ms-1 small"></i>
+                <a href="{% url 'flora:plant_detail_view' plant.id %}" class="btn btn-sm btn-success rounded-pill px-3 fw-bold shadow-sm transition-all hover-lift">
+                    View <i class="fas fa-chevron-right ms-1 small"></i>
                 </a>
             </div>
         </div>

@@ -4,121 +4,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Planteer{% endblock %}</title>
+    <title>{% block title %}Planteer | Green Hub{% endblock %}</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
 </head>
-<body class="{% if request.COOKIES.mode == 'dark' %}bg-dark text-white{% endif %}">
+<body class="{% if request.COOKIES.mode == 'dark' %}dark-theme bg-dark text-white{% else %}light-theme bg-light{% endif %}">
 
-<nav class="navbar navbar-expand-lg border-bottom py-3 {% if request.COOKIES.mode == 'dark' %}navbar-dark bg-dark{% else %}navbar-light bg-white{% endif %}">
-    <div class="container">
-        <a class="navbar-brand fw-bold fs-4" href="{% url 'main:home_view' %}">Planteer</a>
+    <nav class="navbar navbar-expand-lg fixed-top modern-nav">
+        <div class="container container-glass p-2 px-4">
+            <a class="navbar-brand fw-extrabold fs-3" href="{% url 'main:home_view' %}">
+                <i class="fas fa-leaf text-success me-1"></i>PLANTEER
+            </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarContent">
-            
-            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center gap-3 gap-lg-4">
-                <li class="nav-item">
-                    <a class="nav-link fw-medium p-0" href="{% url 'main:home_view' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium p-0" href="{% url 'flora:all_plants_view' %}">All Plants</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium p-0" href="{% url 'main:contact_us_view' %}">Contact Us</a>
-                </li>
-                
-                <li class="nav-item ms-lg-2">
-                    {% if request.COOKIES.mode == "dark" %}
-                        <a href="{% url 'main:mode_view' 'light' %}?next={{ request.path }}" class="text-warning text-decoration-none">
-                            <i class="fas fa-sun"></i> <span class="d-lg-none">Light Mode</span>
-                        </a>
-                    {% else %}
-                        <a href="{% url 'main:mode_view' 'dark' %}?next={{ request.path }}" class="text-dark text-decoration-none">
-                            <i class="fas fa-moon"></i> <span class="d-lg-none">Dark Mode</span>
-                        </a>
-                    {% endif %}
-                </li>
-            </ul>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav mx-auto gap-lg-4 text-center">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{% url 'main:home_view' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{% url 'flora:all_plants_view' %}">All Plants</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{% url 'publishers:publishers_list_view' %}">Publishers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="{% url 'main:contact_us_view' %}">Contact Us</a>
+                    </li>
+                </ul>
 
-            <div class="d-flex flex-column flex-lg-row gap-2">
-                <a href="{% url 'publishers:add_publisher_view' %}" class="btn {% if request.COOKIES.mode == 'dark' %}btn-light{% else %}btn-dark{% endif %} px-3 py-2 rounded-1 fw-bold small">
-                    <i class="fas fa-user-plus me-1"></i> Publisher
-                </a>
-                <a href="{% url 'flora:add_plant_view' %}" class="btn {% if request.COOKIES.mode == 'dark' %}btn-light{% else %}btn-dark{% endif %} px-3 py-2 rounded-1 fw-bold small">
-                    <i class="fas fa-plus me-1"></i> Add Plant
-                </a>
+                <div class="d-flex flex-column flex-lg-row align-items-center gap-3">
+                    <div class="mode-control">
+                        {% if request.COOKIES.mode == "dark" %}
+                            <a href="{% url 'main:mode_view' 'light' %}?next={{ request.path }}" class="theme-btn text-warning">
+                                <i class="fas fa-sun"></i>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'main:mode_view' 'dark' %}?next={{ request.path }}" class="theme-btn text-muted">
+                                <i class="fas fa-moon"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    <a href="{% url 'publishers:add_publisher_view' %}" class="btn-modern outline">
+                        <i class="fas fa-user-plus me-1"></i> Publisher
+                    </a>
+                    <a href="{% url 'flora:add_plant_view' %}" class="btn-modern solid">
+                        <i class="fas fa-plus me-1"></i> Add Plant
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-    <main class="py-5">
+    <main class="content-wrapper">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="border-top py-5 mt-5 {% if request.COOKIES.mode == 'dark' %}bg-dark text-white{% else %}bg-white{% endif %}">
-        <div class="container">
-            <div class="row gy-5 align-items-baseline"> 
+<footer class="modern-footer">
+    <div class="container">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-5">
+            
+            <div class="footer-left-side" style="flex: 1; max-width: 400px;">
+                <h2 class="footer-logo mb-3 mt-0 lh-1" style="margin-top: -10px !important;">Planteer<span class="text-success">.</span></h2>
+                <p class="footer-desc mb-4 text-muted">
+                    Discover the art of nature. We provide a platform for enthusiasts to explore, share, and grow their botanical knowledge.
+                </p>
+                <div class="social-grid d-flex gap-3">
+                    <a href="#" class="social-item"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-item"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-item"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-item"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-right-side d-flex flex-wrap gap-4 gap-lg-5 pt-lg-4" style="flex: 1; justify-content: flex-end;">
                 
-                <div class="col-lg-5 col-md-12 text-center text-lg-start">
-                    <h5 class="fw-bold m-0 fs-3">Planteer</h5>
-                    <p class="text-muted small mt-3 mb-4 mx-auto mx-lg-0" style="max-width: 300px;">
-                        Brief about the platform and its mission for plant lovers.
-                    </p>
-                    <div class="d-flex justify-content-center justify-content-lg-start gap-4 fs-4">
-                        <a href="#" class="{% if request.COOKIES.mode == 'dark' %}text-white{% else %}text-dark{% endif %}"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="{% if request.COOKIES.mode == 'dark' %}text-white{% else %}text-dark{% endif %}"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="{% if request.COOKIES.mode == 'dark' %}text-white{% else %}text-dark{% endif %}"><i class="fab fa-youtube"></i></a>
-                        <a href="#" class="{% if request.COOKIES.mode == 'dark' %}text-white{% else %}text-dark{% endif %}"><i class="fab fa-instagram"></i></a>
-                    </div>
+                <div class="footer-col">
+                    <h6 class="footer-heading mb-4 mt-0" style="line-height: 1.5; margin-bottom: 20px;">Categories</h6>
+                    <ul class="footer-list">
+                        <li><a href="#">Trees</a></li>
+                        <li><a href="#">Fruits</a></li>
+                        <li><a href="#">Vegetables</a></li>
+                    </ul>
                 </div>
 
-                <div class="col-lg-7 col-md-12">
-                    <div class="d-lg-flex justify-content-lg-end pe-lg-0">
-                        <div class="row row-cols-1 row-cols-sm-3 text-center text-sm-start g-4 m-0" style="min-width: 400px;">
-                            
-                            <div class="col">
-                                <h6 class="fw-bold m-0 small text-uppercase">Categories</h6>
-                                <ul class="list-unstyled text-muted small mt-3">
-                                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Trees</a></li>
-                                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Fruits</a></li>
-                                    <li class="mb-2"><a href="#" class="text-decoration-none text-muted">Vegetables</a></li>
-                                </ul>
-                            </div>
-                            
-                            <div class="col">
-                                <h6 class="fw-bold m-0 small text-uppercase">About</h6>
-                                <ul class="list-unstyled text-muted small mt-3">
-                                    <li class="mb-2">Our Story</li>
-                                    <li class="mb-2">Team</li>
-                                    <li class="mb-2">
-                                        <a href="{% url 'main:contact_messages_view' %}" class="text-decoration-none text-muted">Messages</a>
-                                    </li>
-                                </ul>
-                            </div>
+                <div class="footer-col">
+                    <h6 class="footer-heading mb-4 mt-0" style="line-height: 1.5; margin-bottom: 20px;">About</h6>
+                    <ul class="footer-list">
+                        <li><a href="#">Our Story</a></li>
+                        <li><a href="#">Team</a></li>
+                        <li><a href="{% url 'main:contact_messages_view' %}">Messages</a></li>
+                    </ul>
+                </div>
 
-                            <div class="col">
-                                <h6 class="fw-bold m-0 small text-uppercase">Help</h6>
-                                <ul class="list-unstyled text-muted small mt-3">
-                                    <li class="mb-2">Support</li>
-                                    <li class="mb-2">Privacy</li>
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
+                <div class="footer-col">
+                    <h6 class="footer-heading mb-4 mt-0" style="line-height: 1.5; margin-bottom: 20px;">Help</h6>
+                    <ul class="footer-list">
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Privacy</a></li>
+                    </ul>
                 </div>
 
             </div>
         </div>
-    </footer>
 
+        <div class="footer-bottom border-top mt-5 pt-4 d-flex justify-content-between align-items-center">
+            <p class="copyright m-0 small text-muted">&copy; 2026 Planteer | Professional UI</p>
+            <div class="footer-status d-flex align-items-center gap-2 small text-muted">
+                <span class="status-dot" style="width: 8px; height: 8px; background: #28a745; border-radius: 50%; display: inline-block;"></span> 
+                Online Community
+            </div>
+        </div>
+    </div>
+</footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

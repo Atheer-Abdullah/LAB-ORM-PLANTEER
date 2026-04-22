@@ -4,44 +4,82 @@
 {% block title %} Contact Us - Planteer {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row align-items-start gx-5">
+<div class="container py-5 my-lg-5">
+    <div class="row align-items-center gx-lg-5">
         
-        <div class="col-md-6">
-            <h1 class="fw-bold display-5 mb-2">Contact us</h1>
-            <p class="text-muted mb-5">Subheading for description or instructions</p>
-            
-            <form action="{% url 'main:contact_us_view' %}" method="POST">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label small fw-bold">First name</label>
-                        <input type="text" name="first_name" class="form-control rounded-1 shadow-sm border-light-subtle" placeholder="Jane">
+        <div class="col-lg-6 animate-fade-in">
+            <div class="contact-form-wrapper">
+                <span class="badge rounded-pill bg-success bg-opacity-10 text-success px-3 py-2 mb-3">
+                    <i class="fas fa-envelope me-2"></i>Get in Touch
+                </span>
+                <h1 class="fw-extrabold display-4 mb-3 text-inherit">Let's <span class="text-success">Connect</span></h1>
+                <p class="text-muted mb-5">Have a question about a plant or want to share a botanical discovery? We'd love to hear from you.</p>
+                
+                <form action="{% url 'main:contact_us_view' %}" method="POST" class="modern-form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-floating">
+                                <input type="text" name="first_name" class="form-control contact-input shadow-sm" id="firstName" placeholder="Jane" required>
+                                <label for="firstName" class="text-muted">First name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="form-floating">
+                                <input type="text" name="last_name" class="form-control contact-input shadow-sm" id="lastName" placeholder="Smith" required>
+                                <label for="lastName" class="text-muted">Last name</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label small fw-bold">Last name</label>
-                        <input type="text" name="last_name" class="form-control rounded-1 shadow-sm border-light-subtle" placeholder="Smitherton">
+
+                    <div class="mb-4">
+                        <div class="form-floating">
+                            <input type="email" name="email" class="form-control contact-input shadow-sm" id="emailAddr" placeholder="name@example.com" required>
+                            <label for="emailAddr" class="text-muted">Email address</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-group">
+                            <label class="form-label small fw-bold text-muted ps-2">Your message</label>
+                            <textarea name="message" rows="5" class="form-control contact-textarea shadow-sm" placeholder="How can we help you?" required></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-modern solid w-100 py-3 mt-2 shadow-sm d-flex align-items-center justify-content-center gap-2">
+                        <span>Send Message</span>
+                        <i class="fas fa-paper-plane small"></i>
+                    </button>
+                </form>
+
+                <div class="row mt-5 g-3">
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center gap-3 text-muted">
+                            <div class="icon-circle-bg p-2 text-success">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <span class="small">Riyadh, Saudi Arabia</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center gap-3 text-muted">
+                            <div class="icon-circle-bg p-2 text-success">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <span class="small">24/7 Botanical Support</span>
+                        </div>
                     </div>
                 </div>
-
-                <div class="mb-4">
-                    <label class="form-label small fw-bold">Email address</label>
-                    <input type="email" name="email" class="form-control rounded-1 shadow-sm border-light-subtle" placeholder="email@janesfakedomain.net">
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label small fw-bold">Your message</label>
-                    <textarea name="message" rows="5" class="form-control rounded-1 shadow-sm border-light-subtle" placeholder="Enter your question or message"></textarea>
-                </div>
-
-                <button type="submit" class="btn btn-dark w-100 py-2 mt-2 rounded-1 fw-bold">Submit</button>
-            </form>
+            </div>
         </div>
 
-        <div class="col-md-6 d-none d-md-block text-end">
-            <div class="ps-md-6">
-    <img src="{% static 'images/contact-flower.jpg' %}" class="img-fluid contact-img shadow-sm" alt="Contact Us">
-</div>
+        <div class="col-lg-6 d-none d-lg-block text-center position-relative">
+            <div class="contact-image-wrapper ps-lg-5">
+                <div class="image-blob-bg"></div>
+                <img src="{% static 'images/contact-flower.jpg' %}" 
+                     class="img-fluid rounded-5 shadow-2xl contact-main-img animate-fade-up-more" 
+                     alt="Contact Us">
+            </div>
         </div>
 
     </div>

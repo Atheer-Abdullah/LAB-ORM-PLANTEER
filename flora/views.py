@@ -6,18 +6,23 @@ from publishers.models import Publisher
 def all_plants_view(request: HttpRequest, country_id=None):
     category = request.GET.get("category")
     c_id = country_id or request.GET.get("country")
+    publisher_id = request.GET.get("publisher")
     region_name = request.GET.get("native_region")
     is_edible = request.GET.get("is_edible")
     is_helpful = request.GET.get("is_helpful")
 
     plants = Plant.objects.all()
     countries = Country.objects.all()
+    publishers = Publisher.objects.all()
 
     if category:
         plants = plants.filter(category=category)
 
     if c_id and str(c_id) != "all":
         plants = plants.filter(countries__id=c_id)
+
+    if publisher_id:
+        plants = plants.filter(publisher_id=publisher_id)
 
     if region_name:
         plants = plants.filter(countries__name__icontains=region_name)
@@ -34,6 +39,7 @@ def all_plants_view(request: HttpRequest, country_id=None):
         "selected_category": category,
         "selected_country": str(c_id) if c_id else None,
         "countries": countries,
+        "publishers": publishers,
     })
 
 def plant_detail_view(request: HttpRequest, plant_id: int):

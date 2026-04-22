@@ -57,3 +57,89 @@ h1 {
     color: #000 !important;
     background-color: #ffc107 !important;
 }
+
+.plant-card-custom {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 24px !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plant-card-custom:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+
+.plant-title-text {
+    color: var(--text-main) !important;
+}
+
+.country-pill-mini {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--input-bg);
+    padding: 2px 8px;
+    border-radius: 50px;
+    font-size: 0.65rem;
+    color: var(--text-main);
+    border: 1px solid var(--card-border);
+}
+
+.glass-badge {
+    background: rgba(255, 255, 255, 0.85);
+    color: #198754;
+    backdrop-filter: blur(4px);
+    font-weight: 700;
+}
+
+[data-bs-theme="dark"] .glass-badge {
+    background: rgba(0, 0, 0, 0.6);
+    color: #4caf50;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.plant-filter-sidebar {
+    position: sticky;
+    top: 110px; 
+    z-index: 1000; 
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 25px;
+    max-height: calc(100vh - 140px); 
+    overflow-y: auto;
+    transition: var(--transition);
+}
+
+.plant-filter-sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+.plant-filter-sidebar::-webkit-scrollbar-thumb {
+    background: var(--accent-green);
+    border-radius: 10px;
+}
+    
+.offcanvas.offcanvas-start {
+    top: 85px !important;
+    height: calc(100vh - 85px) !important;
+    z-index: 1045 !important;
+    border-top: 1px solid var(--card-border) !important; /* خط فاصل بسيط */
+    box-shadow: 10px 0 30px rgba(0,0,0,0.05) !important;
+}
+
+.offcanvas-backdrop {
+    top: 85px !important;
+    z-index: 1040 !important;
+}
+
+.plant-filter-sidebar {
+    position: relative !important; 
+    top: 0 !important;
+}
+
+.form-select, 
+.form-select option {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+}

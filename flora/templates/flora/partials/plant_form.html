@@ -1,70 +1,78 @@
 {% csrf_token %}
 
 <div class="mb-4">
-    <input type="text" name="name" class="form-control" 
+    <label class="form-label fw-bold small text-secondary text-uppercase">Plant Name</label>
+    <input type="text" name="name" class="form-control border-0 bg-body-secondary p-3 text-body" 
            value="{{ plant.name|default:'' }}"
-           placeholder="Plant Name" required>
+           placeholder="Enter plant name" required>
 </div>
 
 <div class="mb-4">
-    <textarea name="about" class="form-control" required>{{ plant.about|default:'' }}</textarea>
-</div>
-
-<div class="mb-4">
-    <select name="category" class="form-select">
-        {% for value, label in categories %}
-            <option value="{{ value }}" 
-            {% if plant.category == value %}selected{% endif %}>
-                {{ label }}
+    <label class="form-label fw-bold small text-secondary text-uppercase">Publisher</label>
+    <select name="publisher" class="form-select border-0 bg-body-secondary p-3 text-body" required>
+        <option value="" disabled selected>Select the botanical publisher</option>
+        {% for publisher in publishers %}
+            <option value="{{ publisher.id }}" 
+            {% if plant.publisher.id == publisher.id %}selected{% endif %}>
+                {{ publisher.name }}
             </option>
         {% endfor %}
     </select>
 </div>
 
 <div class="mb-4">
-    <input type="text" name="used_for" class="form-control" 
-           value="{{ plant.used_for|default:'' }}"
-           placeholder="Usage">
+    <label class="form-label fw-bold small text-secondary text-uppercase">About the Plant</label>
+    <textarea name="about" class="form-control border-0 bg-body-secondary p-3 text-body" rows="4" required>{{ plant.about|default:'' }}</textarea>
 </div>
 
-<div class="form-check">
-    <input type="checkbox" name="is_edible" 
-    {% if plant.is_edible %}checked{% endif %}>
-    Edible
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <label class="form-label fw-bold small text-secondary text-uppercase">Category</label>
+        <select name="category" class="form-select border-0 bg-body-secondary p-3 text-body">
+            {% for value, label in categories %}
+                <option value="{{ value }}" {% if plant.category == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6 mb-4">
+        <label class="form-label fw-bold small text-secondary text-uppercase">Usage</label>
+        <input type="text" name="used_for" class="form-control border-0 bg-body-secondary p-3 text-body" 
+               value="{{ plant.used_for|default:'' }}" placeholder="e.g. Medical, Decoration">
+    </div>
 </div>
 
-<div class="form-check">
-    <input type="checkbox" name="is_helpful" 
-    {% if plant.is_helpful %}checked{% endif %}>
-    Helpful
-</div>
-
-<div class="mt-4">
-    <input type="file" name="image" class="form-control">
+<div class="d-flex gap-4 mb-4">
+    <div class="form-check">
+        <input type="checkbox" name="is_edible" class="form-check-input" id="edibleCheck" {% if plant.is_edible %}checked{% endif %}>
+        <label class="form-check-label text-body" for="edibleCheck">Edible</label>
+    </div>
+    <div class="form-check">
+        <input type="checkbox" name="is_helpful" class="form-check-input" id="helpfulCheck" {% if plant.is_helpful %}checked{% endif %}>
+        <label class="form-check-label text-body" for="helpfulCheck">Helpful</label>
+    </div>
 </div>
 
 <div class="mb-4">
-    <label class="form-label fw-bold">Countries</label>
-    
-    <div class="d-flex flex-wrap gap-3">
+    <label class="form-label fw-bold small text-secondary text-uppercase">Plant Image</label>
+    <input type="file" name="image" class="form-control border-0 bg-body-secondary p-2 text-body">
+</div>
+
+<div class="mb-4">
+    <label class="form-label fw-bold small text-secondary text-uppercase mb-3 d-block">Geographic Availability (Countries)</label>
+    <div class="d-flex flex-wrap gap-3 p-3 bg-body-secondary rounded-3">
         {% for country in countries %}
             <div class="form-check d-flex align-items-center gap-2">
-                
-                <input type="checkbox"
-                       name="countries"
-                       value="{{ country.id }}"
-                       class="form-check-input"
+                <input type="checkbox" name="countries" value="{{ country.id }}" 
+                       class="form-check-input" id="country_{{ country.id }}"
                        {% if country in plant.countries.all %}checked{% endif %}>
-                
-                <label class="form-check-label d-flex align-items-center gap-2">
-                    
+                <label class="form-check-label d-flex align-items-center gap-2 text-body" for="country_{{ country.id }}">
                     {% if country.flag %}
-                        <img src="{{ country.flag.url }}" width="20" height="13" class="shadow-sm">
+                        <img src="{{ country.flag.url }}" width="20" height="13" class="shadow-sm rounded-1">
                     {% endif %}
-                    
                     {{ country.name }}
                 </label>
-
             </div>
         {% endfor %}
     </div>
