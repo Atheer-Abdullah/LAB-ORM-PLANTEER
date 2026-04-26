@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Sign In - Planteer {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-11 col-md-8 col-lg-5">
+            <h2 class="text-center mb-4 fw-bold {% if request.COOKIES.mode == 'dark' %}text-white{% else %}text-dark{% endif %}">Sign In</h2>
+            
+            <form class="d-flex flex-column gap-4 shadow p-4 p-md-5 rounded-4 bg-light border" action="{% url 'accounts:sign_in' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" method="POST">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label class="fw-bold text-dark mb-2 ms-1">Username</label>
+                    <input type="text" class="form-control rounded-pill px-3 py-2 shadow-sm border-2 text-dark" 
+                           name="username" placeholder="Enter your username" required 
+                           style="background-color: #fff !important;">
+                </div>
+
+                <div class="form-group">
+                    <label class="fw-bold text-dark mb-2 ms-1">Password</label>
+                    <input type="password" class="form-control rounded-pill px-3 py-2 shadow-sm border-2 text-dark" 
+                           name="password" placeholder="Enter your password" required 
+                           style="background-color: #fff !important;">
+                </div>
+
+                <button class="btn btn-primary w-100 py-2 rounded-pill fw-bold shadow-sm mt-2" type="submit">
+                    <i class="fas fa-sign-in-alt me-2"></i> Sign In
+                </button>
+                
+                <p class="text-center mt-3 text-dark mb-0">
+                    New here? <a href="{% url 'accounts:sign_up' %}" class="text-primary fw-bold text-decoration-none">Create Account</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

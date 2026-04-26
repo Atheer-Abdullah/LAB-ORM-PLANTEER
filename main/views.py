@@ -5,7 +5,11 @@ from flora.models import Plant
 # Create your views here.
 
 def home_view(request: HttpRequest):
-   
+    if request.user.is_authenticated:
+        print(f"User is logged in: {request.user.email}")
+    else:
+        print("User is not logged in")
+        
     plants = Plant.objects.all().order_by('-id')[:3]
     return render(request, "main/index.html", {"plants": plants})
 

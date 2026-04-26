@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from .models import Plant, Comment, Country
 from publishers.models import Publisher
+from django.contrib import messages
+
+# Create your views here.
 
 def all_plants_view(request: HttpRequest, country_id=None):
     category = request.GET.get("category")
@@ -15,23 +18,12 @@ def all_plants_view(request: HttpRequest, country_id=None):
     countries = Country.objects.all()
     publishers = Publisher.objects.all()
 
-    if category:
-        plants = plants.filter(category=category)
-
-    if c_id and str(c_id) != "all":
-        plants = plants.filter(countries__id=c_id)
-
-    if publisher_id:
-        plants = plants.filter(publisher_id=publisher_id)
-
-    if region_name:
-        plants = plants.filter(countries__name__icontains=region_name)
-
-    if is_edible == "True":
-        plants = plants.filter(is_edible=True)
-
-    if is_helpful == "True":
-        plants = plants.filter(is_helpful=True)
+    if category: plants = plants.filter(category=category)
+    if c_id and str(c_id) != "all": plants = plants.filter(countries__id=c_id)
+    if publisher_id: plants = plants.filter(publisher_id=publisher_id)
+    if region_name: plants = plants.filter(countries__name__icontains=region_name)
+    if is_edible == "True": plants = plants.filter(is_edible=True)
+    if is_helpful == "True": plants = plants.filter(is_helpful=True)
 
     return render(request, "flora/all_plants.html", {
         "plants": plants,
@@ -53,6 +45,10 @@ def plant_detail_view(request: HttpRequest, plant_id: int):
     })
 
 def add_plant_view(request: HttpRequest):
+    if not request.user.is_superuser:
+        messages.warning(request, "only admin can add plant", "alert-warning")
+        return redirect("main:home_view")
+
     if request.method == "POST":
         new_plant = Plant(
             name=request.POST.get("name"),
@@ -71,6 +67,8 @@ def add_plant_view(request: HttpRequest):
             
         new_plant.save()
         new_plant.countries.set(request.POST.getlist("countries"))
+        
+        messages.success(request, "Created Plant Successfully", "alert-success")
         return redirect("flora:all_plants_view")
 
     return render(request, "flora/add_plant.html", {
@@ -80,6 +78,10 @@ def add_plant_view(request: HttpRequest):
     })
 
 def update_plant_view(request: HttpRequest, plant_id: int):
+    if not request.user.is_superuser:
+        messages.warning(request, "only admin can update plant", "alert-warning")
+        return redirect("main:home_view")
+
     plant = get_object_or_404(Plant, pk=plant_id)
     if request.method == "POST":
         plant.name = request.POST["name"]
@@ -98,6 +100,8 @@ def update_plant_view(request: HttpRequest, plant_id: int):
             
         plant.save()
         plant.countries.set(request.POST.getlist("countries"))
+        
+        messages.success(request, "Updated Plant Successfully", "alert-success")
         return redirect("flora:plant_detail_view", plant_id=plant.id)
 
     return render(request, "flora/update_plant.html", {
@@ -108,18 +112,33 @@ def update_plant_view(request: HttpRequest, plant_id: int):
     })
 
 def delete_plant_view(request: HttpRequest, plant_id: int):
-    plant = get_object_or_404(Plant, pk=plant_id)
-    plant.delete()
+    if not request.user.is_superuser:
+        messages.warning(request, "only admin can delete plant", "alert-warning")
+        return redirect("main:home_view")
+    
+    try:
+        plant = get_object_or_404(Plant, pk=plant_id)
+        plant.delete()
+        messages.success(request, "Deleted plant successfully", "alert-success")
+    except Exception as e:
+        messages.error(request, "Couldn't Delete plant", "alert-danger")
+
     return redirect("flora:all_plants_view")
 
 def add_comment_view(request: HttpRequest, plant_id: int):
+    if not request.user.is_authenticated:
+        messages.error(request, "Only registered user can add review", "alert-danger")
+        return redirect("accounts:sign_in")
+
     if request.method == "POST":
         plant_object = get_object_or_404(Plant, pk=plant_id)
         Comment.objects.create(
-            plant=plant_object, 
-            name=request.POST["name"], 
+            plant=plant_object,
+            user=request.user, 
             content=request.POST["content"]
         )
+        messages.success(request, "Added Comment Successfully", "alert-success")
+        
     return redirect("flora:plant_detail_view", plant_id=plant_id)
 
 def search_plants_view(request: HttpRequest):

@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import Plant, Comment, Country
 
+# Register your models here.
+
 class CountryAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",) 
@@ -12,7 +14,7 @@ class PlantAdmin(admin.ModelAdmin):
     search_fields = ("name", "about")
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("name", "plant", "created_at")
+    list_display = ("user", "plant", "created_at")
     list_filter = ("plant",)
 
 admin.site.register(Country, CountryAdmin)
